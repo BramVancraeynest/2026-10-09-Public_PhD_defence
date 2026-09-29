@@ -1,0 +1,111 @@
+\usepackage{mathabx,bbold,calc,wasysym,mathtools,empheq,pifont,dsfont,sidecap,stmaryrd,nicefrac,relsize,graphicx,array,tabularx,soul}
+\usepackage[english]{babel}
+\usepackage[export]{adjustbox}
+\usepackage[ampersand]{easylist}
+\usepackage{mathrsfs}
+\usepackage{multirow,booktabs} \renewcommand\multirowsetup{\centering}
+\usepackage{makecell}
+
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup[table]{labelformat=empty}
+\captionsetup[figure]{labelformat=empty}
+\captionsetup[subfigure]{labelformat=empty}
+\usepackage{showlabels}
+
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usetikzlibrary{shapes.geometric,arrows,matrix,calc,scopes,decorations.markings,intersections,arrows.meta,decorations.pathreplacing,angles,quotes,patterns,decorations.pathmorphing}
+
+% \usetikzlibrary{external}
+% \tikzsetexternalprefix{fig/}
+% \tikzexternalize
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand\qedsymbol{${\sss \boxempty}$}
+\renewenvironment{proof}{{\scshape Proof.}}{\qed}
+
+\newcommand{\rU}{{\rm U}}
+\newcommand{\rd}{{\rm d}}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\q}{\quad}
+\newcommand{\ot}{\leftarrow}
+\newcommand{\cat}{\lhd}
+\newcommand{\act}{\rhd}
+\DeclareMathOperator{\actb}{\mathrlap{\hspace{1.2pt}\cdot}\rhd}
+\newcommand{\nn}{\nonumber}
+\newcommand{\sss}{\scriptstyle}
+\newcommand{\ssss}{\scriptscriptstyle}
+\newcommand{\bul}{\raisebox{1pt}{${\sss \bullet}$}}
+\newcommand{\bulScr}{\raisebox{.5pt}{$\ssss \bullet$}}
+\newcommand{\snum}[1]{\text{\small $#1$}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\mbb}{\mathbb}
+\newcommand{\fr}[1]{\mathfrak{#1}}
+\newcommand{\msf}[1]{\mathsf{#1}}
+\newcommand{\tmsf}[1]{\tilde{\mathsf{#1}}}
+\newcommand{\Vect}{\mathsf{Vec}}
+\newcommand{\Rep}{\mathsf{Rep}}
+\newcommand{\TVect}{\mathsf{2Vec}}
+\newcommand{\TRep}{\mathsf{2Rep}}
+\newcommand{\Fun}{\mathsf{Fun}}
+\newcommand{\TFun}{\mathsf{2Fun}}
+\newcommand{\Mod}{\mathsf{Mod}}
+\newcommand{\Ob}{{\rm Ob}}
+\newcommand{\Hom}{{\rm Hom}}
+\newcommand{\HomC}{\msf{Hom}}
+\newcommand{\End}{{\rm End}}
+\newcommand{\EndC}{\msf{End}}
+\newcommand{\ub}{\underline}
+
+\newcommand{\CC}[6]{{\scriptsize \left[\begin{array}{@{}cc|c@{}}#1 & #2 & #3 \\ #4 & #5 & #6 \end{array}\right]}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\newcommand{\xRrightarrow}[2][]{\ext@arrow 0359\Rrightarrowfill@{#1}{#2}}
+\newcommand{\Rrightarrowfill@}{\arrowfill@\equiv\equiv\Rrightarrow}
+\newcommand{\xLleftarrow}[2][]{\ext@arrow 3095\Lleftarrowfill@{#1}{#2}}
+\newcommand{\Lleftarrowfill@}{\arrowfill@\Lleftarrow\equiv\equiv}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\usetheme{default}
+\usecolortheme{}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+\definecolor{UGentBlue}{RGB}{30,100,200}
+\definecolor{UGentYellow}{RGB}{255,210,0}
+\colorlet{purple}{BlueViolet!40} 
+% red!35!UGentBlue
+%\setbeamercolor{frametitle}{fg=UGentBlue, bg=gray!12}
+\setbeamercolor{title}{fg=UGentBlue}
+\setbeamercolor{local structure}{fg=UGentBlue}
+
+
+\setbeamertemplate{frametitle}{
+\vspace{10pt}\color{UGentBlue}\bf\centering\centerline{\underline{\insertframetitle}}}
+%\\\vspace{-6pt}\hrulefill
+
+\renewcommand\thefootnote{\textcolor{UGentBlue}{\arabic{footnote}}}
+
+\setbeamerfont{title}{series=\bfseries}
+\setbeamerfont{institute}{size=\fontsize{9pt}{9pt}}
+\setbeamerfont{date}{size=\fontsize{9pt}{9pt}}
+\setbeamerfont{title}{size=\fontsize{14pt}{9pt}}
+
+\newcommand{\icon}[1]{\raisebox{-.4\height}{\includegraphics[width=.8cm]{#1}}}
+% \newcommand{\CITE}[1]{{\color{UGentBlue}\tiny[#1]}}
+
+
+\hypersetup{
+	colorlinks,
+	linkcolor={UGentBlue},
+	citecolor={UGentBlue},
+	urlcolor={UGentBlue}
+}

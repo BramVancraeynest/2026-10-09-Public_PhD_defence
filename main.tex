@@ -1,0 +1,39 @@
+\expandafter\gdef\csname ver@amssymb.sty\endcsname{9999/12/31}
+\expandafter\gdef\csname ver@amsfonts.sty\endcsname{9999/12/31}
+
+\documentclass[9pt, aspectratio=169, xcolor=dvipsnames]{beamer}
+
+\usepackage[backend=biber,style=authoryear]{biblatex}
+\addbibresource{refs.bib}
+
+\global\expandafter\let\csname ver@amssymb.sty\endcsname\relax
+\global\expandafter\let\csname ver@amsfonts.sty\endcsname\relax
+
+\renewcommand{\emph}[1]{\underline{#1}}
+
+\input{preamb}
+\input{tikz}
+
+\colorlet{phasecol}{UGentBlue}
+\colorlet{gaugecol}{BrickRed}
+% \definecolor{phasecol}{RGB}{44,95,138}   % blue : phases of matter
+% \definecolor{gaugecol}{RGB}{180,85,30}   % rust : gauging
+\definecolor{toolcol}{RGB}{90,90,90}     % grey : tensor networks
+
+\title{An entanglement perspective on \\ generalized symmetries, dualities and anomalies}
+\subtitle{Public defence}
+\author{\textbf{Bram Vancraeynest-De Cuiper}}
+\institute{Department of Physics and Astronomy \\ Faculty of Sciences \\ Ghent University}
+\date{9 October 2026 -- 17:00}
+\titlegraphic{\includegraphics[width=4cm]{figs/UGent_En}\hspace*{2cm}~%
+	\includegraphics[width=4cm]{figs/FWO}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\input{_part1}
+% \input{_part2}
+
+\end{document}
