@@ -5,15 +5,15 @@ Shoot silver atoms through a magnetic field along the `up-down' ($Z$) direction
 
 \bigskip Naively, one expects a smeared-out distribution
 
-\only<5->
+\uncover<5->
 {\bigskip
 In fact \emph{two} beams, $\spinup$ or $\spindown$: \emph{quantised}}
 
-\only<6->
+\uncover<6->
 {\bigskip
 Rotate the magnets to the `left-right' ($X$) direction: again two beams}
 
-\only<7->
+\uncover<7->
 {\bigskip
 We could naively think that the atom carries predetermined outcomes for $X$ and $Z$ measurements}
 \column{0.45\textwidth}
@@ -48,10 +48,18 @@ We could naively think that the atom carries predetermined outcomes for $X$ and 
 \only<4->{\sgsequence{4}}
 
 \bigskip
-\uncover<5->{$|\spinright\ra = |\spinup\ra + |\spindown\ra$ is a \emph{superposition}, but so is
+\uncover<5->{%
+\alt<6->{%
+$|{\spinright}\ra = \tfrac{1}{\sqrt{2}}\,|{\spinup}\ra + \tfrac{1}{\sqrt{2}}\,|{\spindown}\ra$ is a \emph{superposition},
 
 \medskip
-$|\spinup\ra = |\spinleft\ra + |\spinright\ra$}
+but so is $|{\spinup}\ra = \tfrac{1}{\sqrt{2}}\,|{\spinleft}\ra + \tfrac{1}{\sqrt{2}}\,|{\spinright}\ra$%
+}{%
+$\spinright = (50\%)\ \spinup + (50\%)\ \spindown\vphantom{\tfrac{1}{\sqrt{2}}}$ is a \emph{superposition},
+
+\medskip
+but so is $\spinup = (50\%)\ \spinleft + (50\%)\ \spinright\vphantom{\tfrac{1}{\sqrt{2}}}$%
+}}
 \end{frame}
 
 
@@ -172,5 +180,6 @@ In many-body systems, entanglement is the rule rather than the exception
 \only<1>{\entangledoutcomes{0}}%
 \only<2>{\entangledoutcomes{1}}%
 \only<3>{\entangledoutcomes{2}}
+\tensornetwork
 \end{columns}
 \end{frame}

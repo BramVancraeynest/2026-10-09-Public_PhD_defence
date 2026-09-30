@@ -1,0 +1,13 @@
+% \newpart{n}: announces part n (1, 2 or 3); the other two messages are grey
+\newcommand\newpart[1]{%
+\begin{frame}{Part #1}
+\centering
+\def\v{#1}
+{\ifnum\v=1 \else\color{gray}\fi Symmetry as an organising principle}
+
+\bigskip
+{\ifnum\v=2 \else\color{gray}\fi The observer is part of the quantum world}
+
+\bigskip
+{\ifnum\v=3 \else\color{gray}\fi The whole is more than the sum of its parts}
+\end{frame}}

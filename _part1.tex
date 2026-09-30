@@ -10,8 +10,12 @@
 \end{frame}
 
 \begin{frame}{Water ice}
-    \begin{tabular}{>{\centering\arraybackslash}p{.45\textwidth}>{\centering\arraybackslash}p{.45\textwidth}}
-    \end{tabular}
+\centering
+\begin{tabular}{>{\centering\arraybackslash}p{.45\textwidth}>{\centering\arraybackslash}p{.45\textwidth}}
+    \includegraphics[width=.7\linewidth]{figs/water.jpg} & \includegraphics[width=.7\linewidth]{figs/ice.jpg} \\
+    \addlinespace[2em]
+    \IceLattice{0} & \IceLattice{1}
+\end{tabular}
 \end{frame}
 
 \begin{frame}{Crystallography}
@@ -30,12 +34,44 @@
 
 \begin{frame}{Symmetry}
 \centering
-\includegraphics[width=.3\textwidth]{figs/Honeycomb.jpg}\quad
-\includegraphics[width=.3\textwidth]{figs/Mosaic.jpg}
+\includegraphics[height=2.6cm]{figs/Honeycomb.jpg}\qquad
+\includegraphics[height=2.6cm]{figs/Mosaic.jpg}
 
-\medskip
-\fbox{\parbox[c][2.6cm][c]{.3\textwidth}{\centering Photo 3}}
+\bigskip
+
+\MexicanHat
 
 \bigskip
 Symmetry $=$ transformations that leave structure invariant
+\end{frame}
+
+\begin{frame}{Curie and Landau}
+\begin{columns}[T]
+\column{.48\textwidth}
+\centering
+\includegraphics[height=2.8cm]{figs/Curie.jpg}
+
+\medskip
+{\it C'est la dissymétrie qui crée le phénomène.}
+
+\smallskip
+{\small It is asymmetry that creates the phenomenon.}
+
+\smallskip
+{\scriptsize P.~Curie (1894)}
+\column{.48\textwidth}
+\centering
+\uncover<2->{%
+\includegraphics[height=2.8cm]{figs/Landau.jpg}
+
+\medskip
+{\it But elements of symmetry are either present or absent; no intermediate case is possible.}
+
+\smallskip
+{\scriptsize L.~D.~Landau (1937)}}
+\end{columns}
+
+\bigskip
+\centering
+\uncover<3->{Even if the underlying physics is symmetric, phenomena (sometimes/often) break this.}
 \end{frame}
