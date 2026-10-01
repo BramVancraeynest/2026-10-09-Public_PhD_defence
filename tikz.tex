@@ -126,6 +126,113 @@ minimum width=20pt, minimum height=3pt, inner sep=0pt, ultra thin, font=\tiny}}
 \newcommand{\spinright}{\magnet{180}{red}{UGentBlue}}
 \newcommand{\spinsuper}{\magnet{90}{red!50!UGentBlue}{purple}}
 
+% \WaterNetwork: liquid water, molecules in a disordered network of hydrogen bonds
+\newcommand\WaterNetwork{%
+\begin{tikzpicture}[
+	baseline={(current bounding box.center)}
+	]
+	
+	\def\l{.27}       % cm per Angstrom (as in \IceLattice)
+	\def\ro{.3}       % radius of O (Angstrom)
+	\def\rh{.14}      % radius of H (Angstrom)
+	\def\d{.96}       % O-H distance (Angstrom)
+	\def\hoh{104.5}   % angle H-O-H (degrees)
+	
+	\begin{scope}[
+		x={(\l*1cm,0)},
+		y={(0,\l*1cm)},
+		oxygen/.style={obj1, fill=gray!30},
+		hydrogen/.style={obj1, fill=white},
+        hbond/.style={obj1, black!30, densely dotted}
+		]
+		
+		% \W(x,y,a): water molecule with its O at (x,y); the bisector of H-O-H points in direction a (degrees)
+		\def\W(##1,##2,##3){%
+			\draw[obj1] (##3+\hoh/2:\d) ++(##1,##2) -- (##1,##2) -- ++(##3-\hoh/2:\d);
+			\filldraw[oxygen] (##1,##2) circle (\ro);
+			\filldraw[hydrogen] (##1,##2) ++(##3+\hoh/2:\d) circle (\rh);
+			\filldraw[hydrogen] (##1,##2) ++(##3-\hoh/2:\d) circle (\rh);}
+		
+		% Hydrogen bonds (from an H to an O of another molecule)
+		\draw[hbond] (6.45,-2.53) -- (7.00,-1.13);
+		\draw[hbond] (2.85,4.86) -- (4.37,5.15);
+		\draw[hbond] (-3.39,-3.77) -- (-3.77,-4.84);
+		\draw[hbond] (-0.41,-4.51) -- (1.24,-4.11);
+		\draw[hbond] (2.11,2.49) -- (3.63,2.92);
+		\draw[hbond] (0.96,1.49) -- (0.35,0.03);
+		\draw[hbond] (-1.44,4.09) -- (-3.06,3.79);
+		\draw[hbond] (4.80,-0.61) -- (5.40,0.86);
+		\draw[hbond] (-5.45,-4.82) -- (-3.77,-4.84);
+		\draw[hbond] (0.83,-0.80) -- (1.95,-1.87);
+		\draw[hbond] (-0.57,-0.23) -- (-2.17,-0.57);
+		\draw[hbond] (3.50,1.97) -- (2.82,0.54);
+		\draw[hbond] (4.58,3.03) -- (6.12,3.28);
+		\draw[hbond] (5.28,3.75) -- (4.37,5.15);
+		\draw[hbond] (5.88,2.35) -- (5.40,0.86);
+		\draw[hbond] (3.85,-6.17) -- (5.29,-5.60);
+		\draw[hbond] (-3.69,5.82) -- (-2.21,6.07);
+		\draw[hbond] (-4.75,4.73) -- (-5.55,3.35);
+		\draw[hbond] (4.64,-3.29) -- (6.16,-3.44);
+		\draw[hbond] (3.19,-2.82) -- (1.95,-1.87);
+		\draw[hbond] (2.20,-4.00) -- (3.73,-3.62);
+		\draw[hbond] (2.19,-0.94) -- (2.82,0.54);
+		\draw[hbond] (0.99,-1.87) -- (-0.51,-2.36);
+		\draw[hbond] (-5.56,1.29) -- (-3.91,1.40);
+		\draw[hbond] (4.78,-4.78) -- (3.73,-3.62);
+		\draw[hbond] (-2.82,-4.74) -- (-1.37,-4.63);
+		\draw[hbond] (-1.38,-2.75) -- (-3.05,-2.87);
+		\draw[hbond] (0.10,-3.10) -- (1.24,-4.11);
+		\draw[hbond] (-4.92,2.63) -- (-3.91,1.40);
+		\draw[hbond] (-1.75,2.77) -- (-3.06,3.79);
+		\draw[hbond] (-0.37,2.12) -- (1.15,2.43);
+		\draw[hbond] (-4.02,3.81) -- (-5.55,3.35);
+		\draw[hbond] (-2.81,4.72) -- (-2.21,6.07);
+		\draw[hbond] (-3.03,-1.00) -- (-4.74,-1.07);
+		\draw[hbond] (-1.54,-1.30) -- (-0.51,-2.36);
+		\draw[hbond] (-4.06,0.45) -- (-4.74,-1.07);
+		\draw[hbond] (-2.96,1.49) -- (-1.31,1.91);
+		\draw[hbond] (6.13,-1.53) -- (4.44,-1.51);
+		\draw[hbond] (5.93,0.06) -- (7.00,-1.13);
+		\draw[hbond] (-4.26,-1.91) -- (-3.05,-2.87);
+		\draw[hbond] (1.90,0.28) -- (0.35,0.03);
+		\draw[hbond] (3.30,-0.29) -- (4.44,-1.51);
+		
+		% Molecules
+		\W(6.16,-3.44,124)
+		\W(1.92,4.60,68)
+		\W(-3.05,-2.87,302)
+		\W(-1.37,-4.63,60)
+		\W(1.15,2.43,311)
+		\W(4.37,5.15,114)
+		\W(-0.49,4.19,134)
+		\W(-2.21,6.07,195)
+		\W(4.44,-1.51,121)
+		\W(-6.36,-5.15,72)
+		\W(0.35,0.03,248)
+		\W(3.63,2.92,315)
+		\W(6.12,3.28,203)
+		\W(2.89,-6.14,306)
+		\W(-4.64,5.69,316)
+		\W(3.73,-3.62,72)
+		\W(1.24,-4.11,314)
+		\W(1.95,-1.87,128)
+		\W(-6.43,0.90,76)
+		\W(5.29,-5.60,69)
+		\W(-3.77,-4.84,314)
+		\W(-0.51,-2.36,257)
+		\W(-5.55,3.35,259)
+		\W(-1.31,1.91,65)
+		\W(-3.06,3.79,127)
+		\W(-2.17,-0.57,259)
+		\W(-3.91,1.40,314)
+		\W(7.00,-1.13,257)
+		\W(5.40,0.86,251)
+		\W(-4.74,-1.07,247)
+		\W(2.82,0.54,248)
+	\end{scope}
+	
+\end{tikzpicture}}
+
 \newcommand\IceLattice[1]{%
 \begin{tikzpicture}[
 	baseline={(current bounding box.center)}
@@ -908,7 +1015,33 @@ minimum width=20pt, minimum height=3pt, inner sep=0pt, ultra thin, font=\tiny}}
 	
 \end{tikzpicture}}
 
-% \tensornetwork: purple magnets joined by wiggly lines, as in a tensor network
+\newcommand\TwoToTheN{%
+\begin{tikzpicture}[
+	baseline={(current bounding box.center)}
+	]
+	
+	\def\l{.4}
+	\def\N{12}     % largest number of spins shown
+	\def\h{7}      % height of 2^\N, in units of \l
+	
+	% Axes
+	\draw[obj1, -{Latex}] (0,0) -- ({(\N+.8)*\l},0) node[right] {$N$};
+	\draw[obj1, -{Latex}] (0,0) -- (0,{(\h+.8)*\l}) node[above] {$2^N$};
+	\foreach \n in {2,4,...,\N} {
+		\draw[obj1] ({\n*\l},0) -- ({\n*\l},{-.2*\l}) node[below] {\scriptsize $\n$};
+	}
+	\foreach \y in {500,1000,2000,4000} {
+		\draw[obj1] (0,{\y/2^\N*\h*\l}) -- ({-.2*\l},{\y/2^\N*\h*\l}) node[left] {\scriptsize $\y$};
+	}
+	
+	% 2^N, with a dot for every number of spins
+	\draw[obj1] plot[domain=0:\N, samples=80, smooth] ({\x*\l},{2^(\x-\N)*\h*\l});
+	\foreach \n in {1,...,\N} {
+		\fill ({\n*\l},{2^(\n-\N)*\h*\l}) circle ({.12*\l});
+	}
+	
+\end{tikzpicture}}
+
 \newcommand\tensornetwork{%
 \begin{tikzpicture}[
 	baseline={(current bounding box.center)}
