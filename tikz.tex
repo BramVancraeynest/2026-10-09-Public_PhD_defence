@@ -105,10 +105,9 @@ minimum width=20pt, minimum height=3pt, inner sep=0pt, ultra thin, font=\tiny}}
 	\draw[obj1, -{Latex}] (0,0) -- ({10.5*\l},0) node[right] {$T$};
 	\draw[obj1] ({\tc*\l},{-.15*\l}) -- ({\tc*\l},{.15*\l}) node[below=4pt] {$T_c$};
 	
-	% Both phases are stable
 	\ifnum\v>0
-		\node[below=4pt] at ({\tc/2*\l},{.15*\l}) {stable};
-		\node[below=4pt] at ({(\tc+10)/2*\l},{.15*\l}) {stable};
+		\node[below=4pt] at ({\tc/2*\l},{.15*\l}) {ferro};
+		\node[below=4pt] at ({(\tc+10)/2*\l},{.15*\l}) {para};
 	\fi
 	
 \end{tikzpicture}}
