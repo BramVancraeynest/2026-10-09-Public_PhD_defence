@@ -1,15 +1,4 @@
-\begin{frame}{Ferromagnets}
-\centering
-\includegraphics[height=4cm]{figs/Magnet}
-
-\bigskip
-\uncover<2->{%
-	\only<-2>{\FerroFade{0}}%
-	\only<3->{\FerroFade{1}}%
-}
-\end{frame}
-
-\begin{frame}{Water ice}
+\begin{frame}{Phases of water}
 \centering
 \begin{tabular}{>{\centering\arraybackslash}p{.45\textwidth}>{\centering\arraybackslash}p{.45\textwidth}}
     \includegraphics[width=.7\linewidth]{figs/water.jpg} & \includegraphics[width=.7\linewidth]{figs/ice.jpg} \\
@@ -80,27 +69,42 @@ Symmetry $=$ transformations that leave structure invariant
 {\it But elements of symmetry are either present or absent; no intermediate case is possible.}
 
 \smallskip
-{\scriptsize L.~D.~Landau (1937)}}
+{\scriptsize L.~Landau (1937)}}
 \end{columns}
 
 \bigskip
 \centering
-\uncover<3->{Even if the underlying physics is symmetric, phenomena (sometimes/often) break this.}
+\uncover<3->{Even if the underlying physics is symmetric, phenomena often break this.}
 \end{frame}
 
-\begin{frame}{Magnetic order}
+\begin{frame}{Ferromagnets}
+\begin{columns}[c]
+\column{.38\textwidth}
 \centering
-A magnet is made of many tiny magnets
-
-\bigskip
+\includegraphics[height=3cm]{figs/Magnet}
+\column{.6\textwidth}
+\centering
 \uncover<2->{%
-	\only<-2>{\MagneticOrder{1}}%
-	\only<3>{\MagneticOrder{2}}%
-	\only<4->{\MagneticOrder{3}}}
+	\only<-2>{\FerroFade{0}}%
+	\only<3->{\FerroFade{1}}}
+\end{columns}
 
 \bigskip
-\uncover<4->{Up or down? Pure chance: the laws have no preference}
+\begin{columns}[c]
+\column{.38\textwidth}
+\centering
+\uncover<4->{Could a magnet be made of many tiny magnets?}
+
+\bigskip
+\uncover<7->{How are magnets aligned?}
 
 \medskip
-\uncover<5->{But what \emph{is} one tiny magnet?}
+\uncover<8->{But what \emph{is} one tiny magnet?}
+\column{.6\textwidth}
+\centering
+\uncover<5->{%
+	\only<-5>{\MagneticOrder{1}}%
+	\only<6>{\MagneticOrder{2}}%
+	\only<7->{\MagneticOrder{3}}}
+\end{columns}
 \end{frame}
