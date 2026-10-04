@@ -20,9 +20,17 @@
 \author{\textbf{Bram Vancraeynest-De Cuiper}}
 \institute{Department of Physics and Astronomy \\ Faculty of Sciences \\ Ghent University}
 \date{9 October 2026 -- 17:00}
-\titlegraphic{\includegraphics[width=4cm]{figs/UGent_En}\hspace*{2cm}~%
-	\includegraphics[width=4cm]{figs/FWO}\hspace*{2cm}
-}
+\titlegraphic{%
+\begin{tikzpicture}[remember picture, overlay]
+	\node[anchor=south west, inner sep=0pt] at ([shift={(4.5cm,.6cm)}]current page.south west)
+		{\includegraphics[height=1.2cm, viewport=20.98 21.10 75.94 68.89, clip]{figs/UGent_En}};
+	\node[anchor=south west, inner sep=0pt] at ([shift={(10cm,.6cm)}]current page.south west)
+		{\includegraphics[height=1.2cm]{figs/FWO}};
+\end{tikzpicture}}
+
+\def\partI{Less symmetry = more order}
+\def\partII{The whole is more than the sum of its parts}
+\def\partIII{The buzzing quantum world}
 
 \begin{document}
 
@@ -36,6 +44,13 @@
 % \end{frame}
 
 \frame{\titlepage}
+
+\begin{frame}{Three messages}
+\centering
+\only<1>{\Roadmap{1}}%
+\only<2>{\Roadmap{2}}%
+\only<3->{\Roadmap{3}}
+\end{frame}
 
 \newpart{1}
 \input{_part1}

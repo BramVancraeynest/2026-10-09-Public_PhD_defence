@@ -1,10 +1,17 @@
 \begin{frame}{Phases of water}
 \centering
+\only<1>{
+\begin{tabular}{>{\centering\arraybackslash}p{.45\textwidth}>{\centering\arraybackslash}p{.45\textwidth}}
+    \includegraphics[width=.7\linewidth]{figs/water.jpg} & \includegraphics[width=.7\linewidth]{figs/ice.jpg}
+\end{tabular}
+}
+\only<2>{
 \begin{tabular}{>{\centering\arraybackslash}p{.45\textwidth}>{\centering\arraybackslash}p{.45\textwidth}}
     \includegraphics[width=.7\linewidth]{figs/water.jpg} & \includegraphics[width=.7\linewidth]{figs/ice.jpg} \\
-    \addlinespace[2em]
+    \addlinespace[1.5em]
     \Water & \IceLattice{1}
 \end{tabular}
+}
 \end{frame}
 
 \begin{frame}{Crystallography}
@@ -39,7 +46,7 @@ Symmetry $=$ transformations that leave structure invariant
 \begin{tabular}{>{\centering\arraybackslash}p{.45\textwidth}>{\centering\arraybackslash}p{.45\textwidth}}
 	\Water & \IceLattice{1} \\
 	\addlinespace[1em]
-	Water: every shift and every rotation & Ice: only fixed steps and rotations
+	Water: continuous shifts and rotations & Ice: lattice translations and rotations
 \end{tabular}
 
 \bigskip
@@ -84,27 +91,21 @@ Symmetry $=$ transformations that leave structure invariant
 \includegraphics[height=3cm]{figs/Magnet}
 \column{.6\textwidth}
 \centering
-\uncover<2->{%
-	\only<-2>{\FerroFade{0}}%
-	\only<3->{\FerroFade{1}}}
+\uncover<2->{\FerroFade{1}}
 \end{columns}
 
 \bigskip
 \begin{columns}[c]
 \column{.38\textwidth}
 \centering
-\uncover<4->{Could a magnet be made of many tiny magnets?}
-
-\bigskip
-\uncover<7->{How are magnets aligned?}
+\uncover<3->{Could a magnet be made of many tiny magnets?}
 
 \medskip
-\uncover<8->{But what \emph{is} one tiny magnet?}
+\uncover<6->{But what \emph{is} one tiny magnet?}
 \column{.6\textwidth}
 \centering
-\uncover<5->{%
-	\only<-5>{\MagneticOrder{1}}%
-	\only<6>{\MagneticOrder{2}}%
-	\only<7->{\MagneticOrder{3}}}
+\uncover<4->{%
+	\only<-4>{\MagneticOrder{1}}%
+	\only<5->{\MagneticOrder{2}}}
 \end{columns}
 \end{frame}

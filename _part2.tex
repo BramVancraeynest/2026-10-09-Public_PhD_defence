@@ -98,8 +98,10 @@ The quantum wave: $|\psi\ra = a\,|{\spinup}\ra + b\,|{\spindown}\ra$
 
 % ---------------------------------------------------------------------------
 \begin{frame}{Two particles}
-\centering
-2 particles: four possibilities: $|{\spinup\spinup}\ra$, $|{\spinup\spindown}\ra$, $|{\spindown\spinup}\ra$, $|{\spindown\spindown}\ra$
+\begin{columns}[c]
+\column{0.45\textwidth}
+2 particles: four possibilities: \par
+$|{\spinup\spinup}\ra$, $|{\spinup\spindown}\ra$, $|{\spindown\spinup}\ra$, $|{\spindown\spindown}\ra$
 
 \bigskip
 Quantum physics dictates: any superposition should be considered:
@@ -107,14 +109,14 @@ Quantum physics dictates: any superposition should be considered:
   |\psi\ra = a\,|{\spinup\spinup}\ra + b\,|{\spinup\spindown}\ra + c\,|{\spindown\spinup}\ra + d\,|{\spindown\spindown}\ra
 \]
 
-\bigskip
-Let us consider the state
-\[
-\spinentangled= \tfrac{1}{\sqrt{2}}\big(|{\spinup\spinup}\ra + |{\spindown\spindown}\ra\big)
-\]
-
+\uncover<2->{
+\column{0.54\textwidth}
+\centering
+For $N$ particles: $2^N$ numbers needed!
+\TwoToTheN[0]
+}
+\end{columns}
 \end{frame}
-
 
 % % ---------------------------------------------------------------------------
 % \begin{frame}{Mathematics and computer simulations}
@@ -149,18 +151,23 @@ Let us consider the state
 \begin{frame}{The whole is more than the sum of its parts}
 \begin{columns}[c]
 \column{0.52\textwidth}
-An entangled state cannot be described particle by particle
+Let us now consider the state
+\[
+\spinentangled= \tfrac{1}{\sqrt{2}}\big(|{\spinup\spinup}\ra + |{\spindown\spindown}\ra\big)
+\]
 
+\uncover<4>{
 \bigskip
 {\it [...] the best possible knowledge of a whole does not necessarily include the best possible knowledge of all its parts [...]}
 
 \smallskip
 {\scriptsize E.~Schr\"odinger (1935)}
+}
 
 \column{0.45\textwidth}
 \centering
-\only<1>{\entangledoutcomes{0}}%
 \only<2>{\entangledoutcomes{1}}%
-\only<3>{\entangledoutcomes{2}}
+\only<3>{\entangledoutcomes{2}}%
+\only<4>{\entangledoutcomes{0}}
 \end{columns}
 \end{frame}

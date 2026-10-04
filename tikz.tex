@@ -19,6 +19,36 @@
         mark=at position #1 with {\arrowreversed{Triangle[width=3pt, length=3pt]}}}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \Roadmap{v}: the three messages as stations along an arrow, each with its picture
+% v = 1, 2, 3: number of stations shown (the bounding box is fixed)
+\newcommand\Roadmap[1]{%
+\begin{tikzpicture}[
+	baseline={(current bounding box.center)},
+	station/.style={obj1, draw, circle, fill=UGentBlue, text=white, inner sep=0pt, minimum size={.9*\l*1cm}}
+	]
+	
+	\def\l{.5}
+	\def\v{#1}
+	\def\d{8.5}    % distance between the stations
+
+    \clip (-.1*\d*\l,-2) rectangle (3.1*\d*\l,3.5);
+    
+	% Fixed bounding box, so that all versions have the same size
+	\path ({-.2*\l},{-2.9*\l}) rectangle ({(3*\d+.6)*\l},{7.3*\l});
+	
+	% The road
+	\draw[obj1, -{Latex}] (0,0) -- ({3*\d*\l},0);
+	
+	% Stations: picture above, number on the arrow, message below
+	\foreach \k/\fig/\msg in {1/{\DiamondUnitCell}/\partI, 2/{\entangledpair{0}}/\partII, 3/{\PEPS{0}}/\partIII} {
+		\ifnum\k>\v \else
+			\node at ({(\k-.5)*\d*\l},{4*\l}) {\fig};
+			\node[station] at ({(\k-.5)*\d*\l},0) {\k};
+			\node[below, text width={3.6cm}, align=flush center] at ({(\k-.5)*\d*\l},{-.6*\l}) {\msg};
+		\fi
+	}
+	
+\end{tikzpicture}}
 \newcommand\FerroFade[1]{%
 \begin{tikzpicture}[
 	baseline={(current bounding box.center)}
@@ -161,22 +191,29 @@
 	\def\az{0}       % azimuth and elevation of the viewpoint
 	\def\el{72}       % (the atoms below are listed from back to front for this view)
 	
-	% Atoms and bonds
+	% Atoms and bonds. In this view no bond passes in front of an atom, so every line goes on
+	% the layer bonds, behind all atoms: no halo can bite into an atom, and only the atoms
+	% need the back-to-front order.
+	\pgfdeclarelayer{bonds}
+	\pgfsetlayers{bonds,main}
 	\def\O(##1){\filldraw[oxygen] (##1) circle ({\ro*\l*1cm});}
 	\def\H(##1)(##2){\filldraw[hydrogen] ($(##1)!\t!(##2)$) circle ({\rh*\l*1cm});}
-	% bond from O (donor of the H, in version 1) to O
+	% bond from O to O; in version 1 a grey line of the hexagonal network with the O-H of
+	% the first O (the donor of the H) on top of it
 	\def\bond(##1)(##2){%
-		\ifnum\v=0
-			\draw[oo] (##1) -- (##2);
-		\else
-			\draw[covalent] (##1) -- ($(##1)!\t!(##2)$);
-			\draw[hbond] ($(##1)!\t!(##2)$) -- (##2);
-			\H(##1)(##2)
-		\fi}
+		\begin{pgfonlayer}{bonds}
+			\ifnum\v=0
+				\draw[oo] (##1) -- (##2);
+			\else
+				\draw[lattice] (##1) -- (##2);
+				\draw[covalent] (##1) -- ($(##1)!\t!(##2)$);
+			\fi
+		\end{pgfonlayer}
+		\ifnum\v>0 \H(##1)(##2)\fi}
 	% bond to an O outside the picture (also up or down): only the O-H of a molecule inside
 	\def\dangling(##1)(##2){%
 		\ifnum\v>0
-			\draw[covalent] (##1) -- ($(##1)!\t!(##2)$);
+			\begin{pgfonlayer}{bonds}\draw[covalent] (##1) -- ($(##1)!\t!(##2)$);\end{pgfonlayer}
 			\H(##1)(##2)
 		\fi}
 	
@@ -189,7 +226,7 @@
 		hydrogen/.style={obj1, fill=white},
 		oo/.style={obj1, halo, shorten <={\ro*\l*1cm}, shorten >={\ro*\l*1cm}},
 		covalent/.style={obj1, halo, shorten <={\ro*\l*1cm}, shorten >={\rh*\l*1cm}},
-		hbond/.style={obj1, halo, dash pattern=on 1.5pt off 1.2pt, shorten <={\rh*\l*1cm}, shorten >={\ro*\l*1cm}}
+		lattice/.style={obj1, gray!50}
 		]
 		
 		\dangling(-1/3,-5/3,-\z)(-1/3,-5/3,-1/2+\z)
@@ -279,54 +316,59 @@
 	\def\a{32}   % azimuth
 	\def\e{12}   % elevation
 	
-	% Conventional cubic cell of side 4. Atoms and bonds are listed from back to front
-	% for this view; after a large change of \a or \e the order has to be redone.
+	% Conventional cubic cell of side 4. Edges, atoms and bonds are listed from back to front
+	% for this view, every bond before its own atoms (keeps its halo off their outlines);
+	% after a change of \a or \e the order has to be redone.
 	\begin{scope}[
 		x={({cos(\a)*\l*1cm},{-sin(\a)*sin(\e)*\l*1cm})},
 		y={({sin(\a)*\l*1cm},{cos(\a)*sin(\e)*\l*1cm})},
 		z={(0,{cos(\e)*\l*1cm})},
+		halo/.style={preaction={draw, white, solid, line width=2pt}},
+		edge/.style={obj1, gray!50, halo},
 		atom/.style={obj1, fill=gray!30},
-		bond/.style={obj1, shorten <={\r*\l*1cm}, shorten >={\r*\l*1cm}}
+		bond/.style={obj1, halo, shorten <={\r*\l*1cm}, shorten >={\r*\l*1cm}}
 		]
 		
-		% Edges of the cube
-		\foreach \p/\q in {{0,0,0}/{0,0,4}, {0,0,0}/{0,4,0}, {0,0,0}/{4,0,0}, {0,0,4}/{0,4,4}, {0,0,4}/{4,0,4}, {0,4,0}/{0,4,4}, {0,4,0}/{4,4,0}, {0,4,4}/{4,4,4}, {4,0,0}/{4,0,4}, {4,0,0}/{4,4,0}, {4,0,4}/{4,4,4}, {4,4,0}/{4,4,4}} {
-			\draw[obj1, gray!50] (\p) -- (\q);
+		% Edges that pass in front of nothing; the other edges follow at their depth
+		\foreach \p/\q in {{0,4,0}/{0,4,4}, {0,4,0}/{4,4,0}, {0,0,0}/{0,4,0}, {0,4,4}/{4,4,4}, {4,4,0}/{4,4,4}, {0,0,4}/{0,4,4}, {4,0,0}/{4,4,0}, {0,0,0}/{0,0,4}, {0,0,0}/{4,0,0}, {4,0,4}/{4,4,4}} {
+			\draw[edge] (\p) -- (\q);
 		}
 		
 		\filldraw[atom] (0,4,0) circle ({\r*\l*1cm});
-		\filldraw[atom] (0,4,4) circle ({\r*\l*1cm});
 		\draw[bond] (1,3,3) -- (0,4,4);
-		\filldraw[atom] (2,4,2) circle ({\r*\l*1cm});
+		\filldraw[atom] (0,4,4) circle ({\r*\l*1cm});
 		\draw[bond] (1,3,3) -- (2,4,2);
-		\filldraw[atom] (1,3,3) circle ({\r*\l*1cm});
 		\draw[bond] (3,3,1) -- (2,4,2);
+		\filldraw[atom] (2,4,2) circle ({\r*\l*1cm});
 		\draw[bond] (1,3,3) -- (0,2,2);
-		\filldraw[atom] (4,4,0) circle ({\r*\l*1cm});
-		\filldraw[atom] (0,2,2) circle ({\r*\l*1cm});
 		\draw[bond] (3,3,1) -- (4,4,0);
-		\filldraw[atom] (3,3,1) circle ({\r*\l*1cm});
+		\filldraw[atom] (4,4,0) circle ({\r*\l*1cm});
 		\draw[bond] (3,3,1) -- (2,2,0);
 		\draw[bond] (1,1,1) -- (0,2,2);
-		\filldraw[atom] (2,2,0) circle ({\r*\l*1cm});
+		\filldraw[atom] (0,2,2) circle ({\r*\l*1cm});
 		\draw[bond] (1,3,3) -- (2,2,4);
+		\filldraw[atom] (1,3,3) circle ({\r*\l*1cm});
 		\filldraw[atom] (4,4,4) circle ({\r*\l*1cm});
 		\draw[bond] (1,1,1) -- (2,2,0);
-		\filldraw[atom] (1,1,1) circle ({\r*\l*1cm});
+		\filldraw[atom] (2,2,0) circle ({\r*\l*1cm});
 		\draw[bond] (1,1,1) -- (0,0,0);
 		\filldraw[atom] (0,0,0) circle ({\r*\l*1cm});
 		\draw[bond] (3,3,1) -- (4,2,2);
-		\filldraw[atom] (2,2,4) circle ({\r*\l*1cm});
+		\filldraw[atom] (3,3,1) circle ({\r*\l*1cm});
 		\draw[bond] (1,1,1) -- (2,0,2);
+		\filldraw[atom] (1,1,1) circle ({\r*\l*1cm});
 		\draw[bond] (3,1,3) -- (2,2,4);
-		\filldraw[atom] (4,2,2) circle ({\r*\l*1cm});
+		\draw[edge] (0,0,4) -- (4,0,4);
+		\filldraw[atom] (2,2,4) circle ({\r*\l*1cm});
 		\filldraw[atom] (0,0,4) circle ({\r*\l*1cm});
 		\draw[bond] (3,1,3) -- (4,2,2);
-		\filldraw[atom] (3,1,3) circle ({\r*\l*1cm});
+		\filldraw[atom] (4,2,2) circle ({\r*\l*1cm});
 		\draw[bond] (3,1,3) -- (2,0,2);
 		\filldraw[atom] (2,0,2) circle ({\r*\l*1cm});
-		\filldraw[atom] (4,0,0) circle ({\r*\l*1cm});
 		\draw[bond] (3,1,3) -- (4,0,4);
+		\filldraw[atom] (3,1,3) circle ({\r*\l*1cm});
+		\draw[edge] (4,0,0) -- (4,0,4);
+		\filldraw[atom] (4,0,0) circle ({\r*\l*1cm});
 		\filldraw[atom] (4,0,4) circle ({\r*\l*1cm});
 		
 	\end{scope}
@@ -349,131 +391,142 @@
 	% Calcite (R-3c) in a hexagonal prism of three hexagonal cells, lower half (0 <= z <= c/2), c-axis vertical.
 	% a = 4.99, c = 17.06 Angstrom, drawn with 4 units per a.
 	% Ca (grey), C (black) and O (white); every CO3 group is a flat triangle perpendicular to c.
-	% Atoms and bonds are listed from back to front for this view.
+	% Edges, atoms and bonds are listed from back to front for this view, every bond before its own atoms;
+	% after a change of \a or \e the order has to be redone.
 	\begin{scope}[
 		x={({cos(\a)*\l*1cm},{-sin(\a)*sin(\e)*\l*1cm})},
 		y={({sin(\a)*\l*1cm},{cos(\a)*sin(\e)*\l*1cm})},
 		z={(0,{cos(\e)*\l*1cm})},
+		halo/.style={preaction={draw, white, solid, line width=2pt}},
+		edge/.style={obj1, gray!50, halo},
 		ca/.style={obj1, fill=gray!30},
 		carbon/.style={obj1, fill=black},
 		oxygen/.style={obj1, fill=white},
-		bond/.style={obj1, shorten <={\rc*\l*1cm}, shorten >={\ro*\l*1cm}}
+		bond/.style={obj1, halo, shorten <={\rc*\l*1cm}, shorten >={\ro*\l*1cm}}
 		]
 		
-		% Edges of the cell
-		\foreach \p/\q in {{4.00,0.00,0.00}/{2.00,3.46,0.00}, {4.00,0.00,6.84}/{2.00,3.46,6.84}, {4.00,0.00,0.00}/{4.00,0.00,6.84}, {2.00,3.46,0.00}/{-2.00,3.46,0.00}, {2.00,3.46,6.84}/{-2.00,3.46,6.84}, {2.00,3.46,0.00}/{2.00,3.46,6.84}, {-2.00,3.46,0.00}/{-4.00,0.00,0.00}, {-2.00,3.46,6.84}/{-4.00,0.00,6.84}, {-2.00,3.46,0.00}/{-2.00,3.46,6.84}, {-4.00,0.00,0.00}/{-2.00,-3.46,0.00}, {-4.00,0.00,6.84}/{-2.00,-3.46,6.84}, {-4.00,0.00,0.00}/{-4.00,0.00,6.84}, {-2.00,-3.46,0.00}/{2.00,-3.46,0.00}, {-2.00,-3.46,6.84}/{2.00,-3.46,6.84}, {-2.00,-3.46,0.00}/{-2.00,-3.46,6.84}, {2.00,-3.46,0.00}/{4.00,0.00,0.00}, {2.00,-3.46,6.84}/{4.00,0.00,6.84}, {2.00,-3.46,0.00}/{2.00,-3.46,6.84}} {
-			\draw[obj1, gray!50] (\p) -- (\q);
+		% Edges that pass in front of nothing; the other edges follow at their depth
+		\foreach \p/\q in {{2.00,3.46,0.00}/{-2.00,3.46,0.00}, {-2.00,3.46,0.00}/{-4.00,0.00,0.00}, {2.00,3.46,6.84}/{-2.00,3.46,6.84}, {4.00,0.00,0.00}/{2.00,3.46,0.00}, {-2.00,3.46,6.84}/{-4.00,0.00,6.84}, {4.00,0.00,6.84}/{2.00,3.46,6.84}, {-4.00,0.00,0.00}/{-2.00,-3.46,0.00}, {2.00,-3.46,0.00}/{4.00,0.00,0.00}, {-4.00,0.00,6.84}/{-2.00,-3.46,6.84}, {-2.00,-3.46,0.00}/{2.00,-3.46,0.00}} {
+			\draw[edge] (\p) -- (\q);
 		}
 		
-		\filldraw[oxygen] (-2.51,4.35,3.42) circle ({\ro*\l*1cm});
-		\filldraw[ca] (-2.00,3.46,0.00) circle ({\rca*\l*1cm});
 		\draw[bond] (-2.00,3.46,3.42) -- (-2.51,4.35,3.42);
-		\filldraw[oxygen] (1.49,4.35,3.42) circle ({\ro*\l*1cm});
-		\filldraw[ca] (2.00,3.46,0.00) circle ({\rca*\l*1cm});
-		\filldraw[carbon] (-2.00,3.46,3.42) circle ({\rc*\l*1cm});
+		\filldraw[oxygen] (-2.51,4.35,3.42) circle ({\ro*\l*1cm});
+		\draw[edge] (-2.00,3.46,0.00) -- (-2.00,3.46,6.84);
+		\filldraw[ca] (-2.00,3.46,0.00) circle ({\rca*\l*1cm});
 		\draw[bond] (-2.00,3.46,3.42) -- (-0.97,3.46,3.42);
 		\filldraw[oxygen] (-0.97,3.46,3.42) circle ({\ro*\l*1cm});
 		\draw[bond] (2.00,3.46,3.42) -- (1.49,4.35,3.42);
+		\filldraw[oxygen] (1.49,4.35,3.42) circle ({\ro*\l*1cm});
+		\draw[edge] (2.00,3.46,0.00) -- (2.00,3.46,6.84);
+		\draw[edge] (2.00,-3.46,6.84) -- (4.00,0.00,6.84);
+		\filldraw[ca] (2.00,3.46,0.00) circle ({\rca*\l*1cm});
 		\draw[bond] (-2.00,3.46,3.42) -- (-2.51,2.57,3.42);
-		\filldraw[carbon] (2.00,3.46,3.42) circle ({\rc*\l*1cm});
+		\filldraw[carbon] (-2.00,3.46,3.42) circle ({\rc*\l*1cm});
 		\filldraw[ca] (-2.00,3.46,6.84) circle ({\rca*\l*1cm});
 		\draw[bond] (2.00,3.46,3.42) -- (3.03,3.46,3.42);
 		\filldraw[oxygen] (-2.51,2.57,3.42) circle ({\ro*\l*1cm});
 		\filldraw[oxygen] (3.03,3.46,3.42) circle ({\ro*\l*1cm});
-		\filldraw[oxygen] (-1.49,2.04,1.14) circle ({\ro*\l*1cm});
 		\draw[bond] (2.00,3.46,3.42) -- (1.49,2.57,3.42);
-		\filldraw[oxygen] (0.51,3.20,5.70) circle ({\ro*\l*1cm});
+		\filldraw[carbon] (2.00,3.46,3.42) circle ({\rc*\l*1cm});
 		\filldraw[ca] (0.00,2.31,2.28) circle ({\rca*\l*1cm});
 		\draw[bond] (-2.00,1.15,1.14) -- (-1.49,2.04,1.14);
+		\filldraw[oxygen] (-1.49,2.04,1.14) circle ({\ro*\l*1cm});
 		\filldraw[ca] (2.00,3.46,6.84) circle ({\rca*\l*1cm});
 		\filldraw[oxygen] (1.49,2.57,3.42) circle ({\ro*\l*1cm});
 		\draw[bond] (0.00,2.31,5.70) -- (0.51,3.20,5.70);
-		\filldraw[oxygen] (-3.03,1.15,1.14) circle ({\ro*\l*1cm});
-		\filldraw[oxygen] (2.51,2.04,1.14) circle ({\ro*\l*1cm});
+		\filldraw[oxygen] (0.51,3.20,5.70) circle ({\ro*\l*1cm});
 		\draw[bond] (-2.00,1.15,1.14) -- (-3.03,1.15,1.14);
-		\filldraw[carbon] (-2.00,1.15,1.14) circle ({\rc*\l*1cm});
-		\filldraw[oxygen] (-1.03,2.31,5.70) circle ({\ro*\l*1cm});
+		\filldraw[oxygen] (-3.03,1.15,1.14) circle ({\ro*\l*1cm});
 		\draw[bond] (0.00,2.31,5.70) -- (-1.03,2.31,5.70);
-		\filldraw[carbon] (0.00,2.31,5.70) circle ({\rc*\l*1cm});
+		\filldraw[oxygen] (-1.03,2.31,5.70) circle ({\ro*\l*1cm});
 		\draw[bond] (2.00,1.15,1.14) -- (2.51,2.04,1.14);
-		\filldraw[oxygen] (-4.51,0.89,3.42) circle ({\ro*\l*1cm});
+		\filldraw[oxygen] (2.51,2.04,1.14) circle ({\ro*\l*1cm});
 		\draw[bond] (-2.00,1.15,1.14) -- (-1.49,0.26,1.14);
-		\filldraw[oxygen] (0.97,1.15,1.14) circle ({\ro*\l*1cm});
-		\filldraw[ca] (-4.00,0.00,0.00) circle ({\rca*\l*1cm});
+		\filldraw[carbon] (-2.00,1.15,1.14) circle ({\rc*\l*1cm});
 		\draw[bond] (2.00,1.15,1.14) -- (0.97,1.15,1.14);
+		\filldraw[oxygen] (0.97,1.15,1.14) circle ({\ro*\l*1cm});
 		\draw[bond] (0.00,2.31,5.70) -- (0.51,1.42,5.70);
-		\filldraw[carbon] (2.00,1.15,1.14) circle ({\rc*\l*1cm});
+		\filldraw[carbon] (0.00,2.31,5.70) circle ({\rc*\l*1cm});
 		\filldraw[ca] (-2.00,1.15,4.56) circle ({\rca*\l*1cm});
 		\draw[bond] (-4.00,0.00,3.42) -- (-4.51,0.89,3.42);
+		\filldraw[oxygen] (-4.51,0.89,3.42) circle ({\ro*\l*1cm});
+		\draw[edge] (-4.00,0.00,0.00) -- (-4.00,0.00,6.84);
+		\filldraw[ca] (-4.00,0.00,0.00) circle ({\rca*\l*1cm});
 		\filldraw[oxygen] (-1.49,0.26,1.14) circle ({\ro*\l*1cm});
-		\filldraw[oxygen] (-0.51,0.89,3.42) circle ({\ro*\l*1cm});
 		\filldraw[oxygen] (0.51,1.42,5.70) circle ({\ro*\l*1cm});
+		\draw[edge] (-2.00,-3.46,6.84) -- (2.00,-3.46,6.84);
 		\draw[bond] (2.00,1.15,1.14) -- (2.51,0.26,1.14);
+		\filldraw[carbon] (2.00,1.15,1.14) circle ({\rc*\l*1cm});
 		\filldraw[ca] (0.00,0.00,0.00) circle ({\rca*\l*1cm});
-		\filldraw[carbon] (-4.00,0.00,3.42) circle ({\rc*\l*1cm});
 		\draw[bond] (-4.00,0.00,3.42) -- (-2.97,0.00,3.42);
 		\filldraw[ca] (2.00,1.15,4.56) circle ({\rca*\l*1cm});
 		\filldraw[oxygen] (-2.97,0.00,3.42) circle ({\ro*\l*1cm});
 		\draw[bond] (0.00,0.00,3.42) -- (-0.51,0.89,3.42);
+		\filldraw[oxygen] (-0.51,0.89,3.42) circle ({\ro*\l*1cm});
 		\filldraw[oxygen] (2.51,0.26,1.14) circle ({\ro*\l*1cm});
 		\draw[bond] (-4.00,0.00,3.42) -- (-4.51,-0.89,3.42);
-		\filldraw[oxygen] (3.49,0.89,3.42) circle ({\ro*\l*1cm});
-		\filldraw[ca] (4.00,0.00,0.00) circle ({\rca*\l*1cm});
-		\filldraw[carbon] (0.00,0.00,3.42) circle ({\rc*\l*1cm});
+		\filldraw[carbon] (-4.00,0.00,3.42) circle ({\rc*\l*1cm});
 		\filldraw[ca] (-4.00,0.00,6.84) circle ({\rca*\l*1cm});
 		\draw[bond] (0.00,0.00,3.42) -- (1.03,0.00,3.42);
 		\filldraw[oxygen] (-4.51,-0.89,3.42) circle ({\ro*\l*1cm});
 		\filldraw[oxygen] (1.03,0.00,3.42) circle ({\ro*\l*1cm});
 		\draw[bond] (4.00,0.00,3.42) -- (3.49,0.89,3.42);
+		\filldraw[oxygen] (3.49,0.89,3.42) circle ({\ro*\l*1cm});
+		\draw[edge] (4.00,0.00,0.00) -- (4.00,0.00,6.84);
+		\filldraw[ca] (4.00,0.00,0.00) circle ({\rca*\l*1cm});
 		\draw[bond] (0.00,0.00,3.42) -- (-0.51,-0.89,3.42);
-		\filldraw[oxygen] (-1.49,-0.26,5.70) circle ({\ro*\l*1cm});
+		\filldraw[carbon] (0.00,0.00,3.42) circle ({\rc*\l*1cm});
 		\filldraw[ca] (-2.00,-1.15,2.28) circle ({\rca*\l*1cm});
-		\filldraw[carbon] (4.00,0.00,3.42) circle ({\rc*\l*1cm});
 		\filldraw[ca] (0.00,0.00,6.84) circle ({\rca*\l*1cm});
 		\draw[bond] (4.00,0.00,3.42) -- (5.03,0.00,3.42);
 		\filldraw[oxygen] (-0.51,-0.89,3.42) circle ({\ro*\l*1cm});
 		\filldraw[oxygen] (5.03,0.00,3.42) circle ({\ro*\l*1cm});
 		\draw[bond] (-2.00,-1.15,5.70) -- (-1.49,-0.26,5.70);
-		\filldraw[oxygen] (0.51,-1.42,1.14) circle ({\ro*\l*1cm});
+		\filldraw[oxygen] (-1.49,-0.26,5.70) circle ({\ro*\l*1cm});
 		\draw[bond] (4.00,0.00,3.42) -- (3.49,-0.89,3.42);
-		\filldraw[oxygen] (-3.03,-1.15,5.70) circle ({\ro*\l*1cm});
-		\filldraw[oxygen] (2.51,-0.26,5.70) circle ({\ro*\l*1cm});
+		\filldraw[carbon] (4.00,0.00,3.42) circle ({\rc*\l*1cm});
 		\draw[bond] (-2.00,-1.15,5.70) -- (-3.03,-1.15,5.70);
+		\filldraw[oxygen] (-3.03,-1.15,5.70) circle ({\ro*\l*1cm});
 		\filldraw[ca] (2.00,-1.15,2.28) circle ({\rca*\l*1cm});
-		\filldraw[carbon] (-2.00,-1.15,5.70) circle ({\rc*\l*1cm});
 		\draw[bond] (0.00,-2.31,1.14) -- (0.51,-1.42,1.14);
+		\filldraw[oxygen] (0.51,-1.42,1.14) circle ({\ro*\l*1cm});
 		\filldraw[ca] (4.00,0.00,6.84) circle ({\rca*\l*1cm});
 		\filldraw[oxygen] (3.49,-0.89,3.42) circle ({\ro*\l*1cm});
 		\draw[bond] (2.00,-1.15,5.70) -- (2.51,-0.26,5.70);
-		\filldraw[oxygen] (-1.03,-2.31,1.14) circle ({\ro*\l*1cm});
+		\filldraw[oxygen] (2.51,-0.26,5.70) circle ({\ro*\l*1cm});
 		\draw[bond] (0.00,-2.31,1.14) -- (-1.03,-2.31,1.14);
+		\filldraw[oxygen] (-1.03,-2.31,1.14) circle ({\ro*\l*1cm});
 		\draw[bond] (-2.00,-1.15,5.70) -- (-1.49,-2.04,5.70);
-		\filldraw[carbon] (0.00,-2.31,1.14) circle ({\rc*\l*1cm});
-		\filldraw[oxygen] (0.97,-1.15,5.70) circle ({\ro*\l*1cm});
+		\filldraw[carbon] (-2.00,-1.15,5.70) circle ({\rc*\l*1cm});
 		\draw[bond] (2.00,-1.15,5.70) -- (0.97,-1.15,5.70);
-		\filldraw[carbon] (2.00,-1.15,5.70) circle ({\rc*\l*1cm});
-		\filldraw[oxygen] (-2.51,-2.57,3.42) circle ({\ro*\l*1cm});
+		\filldraw[oxygen] (0.97,-1.15,5.70) circle ({\ro*\l*1cm});
 		\filldraw[oxygen] (-1.49,-2.04,5.70) circle ({\ro*\l*1cm});
 		\draw[bond] (0.00,-2.31,1.14) -- (0.51,-3.20,1.14);
-		\filldraw[ca] (-2.00,-3.46,0.00) circle ({\rca*\l*1cm});
+		\filldraw[carbon] (0.00,-2.31,1.14) circle ({\rc*\l*1cm});
 		\draw[bond] (2.00,-1.15,5.70) -- (2.51,-2.04,5.70);
+		\filldraw[carbon] (2.00,-1.15,5.70) circle ({\rc*\l*1cm});
 		\filldraw[ca] (0.00,-2.31,4.56) circle ({\rca*\l*1cm});
 		\draw[bond] (-2.00,-3.46,3.42) -- (-2.51,-2.57,3.42);
+		\filldraw[oxygen] (-2.51,-2.57,3.42) circle ({\ro*\l*1cm});
+		\draw[edge] (-2.00,-3.46,0.00) -- (-2.00,-3.46,6.84);
+		\filldraw[ca] (-2.00,-3.46,0.00) circle ({\rca*\l*1cm});
 		\filldraw[oxygen] (0.51,-3.20,1.14) circle ({\ro*\l*1cm});
-		\filldraw[oxygen] (1.49,-2.57,3.42) circle ({\ro*\l*1cm});
 		\filldraw[oxygen] (2.51,-2.04,5.70) circle ({\ro*\l*1cm});
-		\filldraw[ca] (2.00,-3.46,0.00) circle ({\rca*\l*1cm});
-		\filldraw[carbon] (-2.00,-3.46,3.42) circle ({\rc*\l*1cm});
 		\draw[bond] (-2.00,-3.46,3.42) -- (-0.97,-3.46,3.42);
 		\filldraw[oxygen] (-0.97,-3.46,3.42) circle ({\ro*\l*1cm});
 		\draw[bond] (2.00,-3.46,3.42) -- (1.49,-2.57,3.42);
+		\filldraw[oxygen] (1.49,-2.57,3.42) circle ({\ro*\l*1cm});
+		\draw[edge] (2.00,-3.46,0.00) -- (2.00,-3.46,6.84);
+		\filldraw[ca] (2.00,-3.46,0.00) circle ({\rca*\l*1cm});
 		\draw[bond] (-2.00,-3.46,3.42) -- (-2.51,-4.35,3.42);
-		\filldraw[carbon] (2.00,-3.46,3.42) circle ({\rc*\l*1cm});
+		\filldraw[carbon] (-2.00,-3.46,3.42) circle ({\rc*\l*1cm});
 		\filldraw[ca] (-2.00,-3.46,6.84) circle ({\rca*\l*1cm});
 		\draw[bond] (2.00,-3.46,3.42) -- (3.03,-3.46,3.42);
 		\filldraw[oxygen] (-2.51,-4.35,3.42) circle ({\ro*\l*1cm});
 		\filldraw[oxygen] (3.03,-3.46,3.42) circle ({\ro*\l*1cm});
 		\draw[bond] (2.00,-3.46,3.42) -- (1.49,-4.35,3.42);
+		\filldraw[carbon] (2.00,-3.46,3.42) circle ({\rc*\l*1cm});
 		\filldraw[ca] (2.00,-3.46,6.84) circle ({\rca*\l*1cm});
 		\filldraw[oxygen] (1.49,-4.35,3.42) circle ({\ro*\l*1cm});
 		
@@ -682,8 +735,8 @@
 		% Beam, only in the classical version: a grey band from the oven, fanning out in the magnet
 		% Beam: a grey band in the classical version (v0), then the path up (v1) and the path down (v2)
 	\ifnum\v=0
-		\fill[gray!30] ({1.6*\l},{.05*\l}) -- ({3.2*\l},{.05*\l}) .. controls ({5.1*\l},{.05*\l}) .. ({7*\l},{.3*\l}) -- ({10.5*\l},{.85*\l})
-			-- ({10.5*\l},{-.85*\l}) -- ({7*\l},{-.3*\l}) .. controls ({5.1*\l},{-.05*\l}) .. ({3.2*\l},{-.05*\l}) -- ({1.6*\l},{-.05*\l}) -- cycle;
+		\fill[gray!30] ({1.63*\l},{.05*\l}) -- ({3.2*\l},{.05*\l}) .. controls ({5.1*\l},{.05*\l}) .. ({7*\l},{.3*\l}) -- ({10.5*\l},{.85*\l})
+			-- ({10.5*\l},{-.85*\l}) -- ({7*\l},{-.3*\l}) .. controls ({5.1*\l},{-.05*\l}) .. ({3.2*\l},{-.05*\l}) -- ({1.63*\l},{-.05*\l}) -- cycle;
 	\fi
 	\ifnum\v>0
 		\draw[obj1] ({1.6*\l},0) -- ({3.2*\l},0) .. controls ({5.1*\l},0) .. ({7*\l},{.3*\l}) -- ({10.5*\l},{.85*\l});
@@ -913,8 +966,8 @@
 	\qubitat{3}{purple}{purple}
 	
 	% Two outcomes, each with probability 50%
-	\draw[obj1, ->] ({4.4*\l},{.3*\l}) -- ({6.3*\l},{1.9*\l}) node[midway, sloped, above] {\scriptsize 50\%};
-	\draw[obj1, ->] ({4.4*\l},{-.3*\l}) -- ({6.3*\l},{-1.9*\l}) node[midway, sloped, below] {\scriptsize 50\%};
+	\draw[obj1, -Latex] ({4.4*\l},{.3*\l}) -- ({6.3*\l},{1.9*\l}) node[midway, sloped, above] {\scriptsize 50\%};
+	\draw[obj1, -Latex] ({4.4*\l},{-.3*\l}) -- ({6.3*\l},{-1.9*\l}) node[midway, sloped, below] {\scriptsize 50\%};
 	\begin{scope}[shift={({7.5*\l},{2.2*\l})}]
 		\qubitat{0}{red}{UGentBlue}
 		\qubitat{3}{red}{UGentBlue}
@@ -939,33 +992,45 @@
 \end{tikzpicture}}
 
 % \TwoToTheN: the 2^N numbers needed for N spins, against a linear growth a*N (logarithmic vertical axis)
-\newcommand\TwoToTheN{%
+\newcommand\TwoToTheN[1][1]{%
 \begin{tikzpicture}[
 	baseline={(current bounding box.center)}
 	]
-	
+ 
 	\def\l{.4}
-	\def\N{12}     % largest number of spins shown
+	\def\Nmin{2}   % smallest number of spins shown
+	\def\N{30}     % largest number of spins shown
+	\def\w{12}     % width of the N-axis up to \N, in units of \l
 	\def\h{7}      % height of 2^\N, in units of \l
-	\def\a{8}      % slope of the linear growth a*N
-	
-	% Axes; the height of a value v is log(v)/log(2^\N) times \h
-	\draw[obj1, -{Latex}] (0,0) -- ({(\N+.8)*\l},0) node[right] {$N$};
+	\def\a{4}      % slope of the linear growth a*N
+ 
+	% Axes; N sits at N/\N times \w, a value v at log(v)/log(2^\N) times \h
+	\draw[obj1, -{Latex}] (0,0) -- ({(\w+.8)*\l},0);
 	\draw[obj1, -{Latex}] (0,0) -- (0,{(\h+.8)*\l});
-	\foreach \n in {2,4,...,\N} {
-		\draw[obj1] ({\n*\l},0) -- ({\n*\l},{-.2*\l}) node[below] {\scriptsize $\n$};
+	\foreach \n in {10,20,...,\N} {
+		\draw[obj1] ({\n/\N*\w*\l},0) -- ({\n/\N*\w*\l},{-.2*\l}) node[below] {\scriptsize $\n$};
 	}
 	\pgfmathtruncatemacro\K{\N*log10(2)}
-	\foreach \k in {0,...,\K} {
-		\draw[obj1] (0,{\k*ln(10)/ln(2)/\N*\h*\l}) -- ({-.2*\l},{\k*ln(10)/ln(2)/\N*\h*\l}) node[left] {\scriptsize $10^{\k}$};
+	\foreach \k in {1,3,...,\K} {
+		\draw[obj1] (0,{\k*ln(10)/ln(2)/\N*\h*\l}) -- ({-.2*\l},{\k*ln(10)/ln(2)/\N*\h*\l})
+			node[left] {\scriptsize $\pgfmathprintnumber[fixed, precision=0, 1000 sep={\,}]{1e\k}$};
 	}
-	
-	% 2^N: a straight line on this axis
-	\draw[obj1] (0,0) -- ({\N*\l},{\h*\l});
-	
-	% Linear growth a*N
-	\draw[obj2] plot[domain=1:\N, samples=60, smooth] ({\x*\l},{ln(\x)/ln(2)/\N*\h*\l});
-	
+ 
+	% Axis label and plot title, just outside everything drawn so far
+	\node[below, font=\footnotesize] at ({\w*\l/2},0 |- current bounding box.south) {\# of quantum magnets};
+	\node[above, font=\footnotesize] at ({\w*\l/2},0 |- current bounding box.north) {Number of parameters};
+ 
+	% 2^N: a straight line on this axis, labelled on its extension
+	\draw[obj1] ({\Nmin/\N*\w*\l},{\Nmin/\N*\h*\l}) -- ({\w*\l},{\h*\l})
+		++({atan(\h/\w)}:4.5mm) node[font=\footnotesize] {\ifnum#1=1 exact\else\phantom{exact}\fi};
+ 
+	% min(2^N, a*N); on this axis log2(min(2^N, aN)) = min(N, log2(aN))
+	% (no 'smooth': the curve has a kink where 2^N = aN)
+    \ifnum#1=1
+		\draw[obj2] plot[domain=\Nmin:\N, samples=200] ({\x/\N*\w*\l},{min(\x, ln(\a*\x)/ln(2))/\N*\h*\l})
+		node[right, font=\footnotesize] {TN};
+	\fi
+ 
 \end{tikzpicture}}
 
 \newcommand\TensorNetwork{%
