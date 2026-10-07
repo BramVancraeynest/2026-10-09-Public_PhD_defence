@@ -9,7 +9,7 @@
 \global\expandafter\let\csname ver@amssymb.sty\endcsname\relax
 \global\expandafter\let\csname ver@amsfonts.sty\endcsname\relax
 
-\renewcommand{\emph}[1]{\underline{#1}}
+\renewcommand{\emph}[1]{\ul{#1}}
 
 \input{preamb}
 \input{tikz}
@@ -25,12 +25,12 @@
 	\node[anchor=south west, inner sep=0pt] at ([shift={(4.5cm,.6cm)}]current page.south west)
 		{\includegraphics[height=1.2cm, viewport=20.98 21.10 75.94 68.89, clip]{figs/UGent_En}};
 	\node[anchor=south west, inner sep=0pt] at ([shift={(10cm,.6cm)}]current page.south west)
-		{\includegraphics[height=1.2cm]{figs/FWO}};
+		{\includegraphics[height=.9cm]{figs/FWO}};
 \end{tikzpicture}}
 
 \def\partI{Less symmetry = more order}
 \def\partII{The whole is more than the sum of its parts}
-\def\partIII{The buzzing quantum world}
+\def\partIII{There is symmetry in the entanglement}
 
 \begin{document}
 
@@ -43,7 +43,7 @@
 %     Gelieve alle plaatsen te gebruiken
 % \end{frame}
 
-\frame{\titlepage}
+\frame[noframenumbering, plain]{\titlepage}
 
 \begin{frame}{Three messages}
 \centering
@@ -58,5 +58,20 @@
 \input{_part2}
 \newpart{3}
 \input{_part3}
+
+\begin{frame}{Conclusion}
+\centering
+The richness that Curie and Landau saw, and the notion of symmetry itself is even greater in the quantum world
+\Roadmap{3}
+\end{frame}
+
+\begin{frame}[noframenumbering, plain]
+    \centering
+    \vfill
+    {\LARGE Questions?}
+    \vfill
+\end{frame}
+
+\input{_extras}
 
 \end{document}

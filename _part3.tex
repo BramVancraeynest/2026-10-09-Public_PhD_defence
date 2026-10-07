@@ -2,7 +2,10 @@
 \begin{frame}{Tensor networks}
 \begin{columns}[c]
 \column{0.45\textwidth}
-Entanglement is the hallmark of the quantum world
+Entanglement is {\it the characteristic trait of quantum mechanics}
+
+\smallskip
+{\scriptsize E.~Schr\"odinger (1935)}
 
 \bigskip
 So: describe many particles \emph{through their entanglement}
@@ -16,7 +19,12 @@ So: describe many particles \emph{through their entanglement}
 
 \column{0.54\textwidth}
 \centering
-\only<-2>{\TensorNetwork}%
+\only<1>{\TensorNetwork}%
+\only<2>{
+\[
+|\psi\ra = \PEPS{0}
+\]
+}%
 \only<3->{\TwoToTheN}
 \end{columns}
 \end{frame}
@@ -28,29 +36,36 @@ So: describe many particles \emph{through their entanglement}
 Part 1: temperature destroys order
 
 \bigskip
-Quantum: magnetic fields does so too, even at zero temperature
+Quantum: magnetic fields do so too, even at zero temperature
 
 \bigskip
-Even richer: different phases without any symmetry! {\scriptsize (Wen, 1989)}
+\EntanglementAxis
+
+\uncover<2->{
+\bigskip
+Even richer: distinct phases, even in the absence of symmetry! {\scriptsize (Wen, 1989)}
+}
 \end{frame}
 
 
 % ---------------------------------------------------------------------------
 \begin{frame}{Symmetry in the entanglement}
 \centering
-Landau: phase classification via symmetry breaking patterns
+Landau: phase classification via symmetry-breaking patterns
 
 \medskip
 But in this case there is no symmetry to begin with\ldots
 
 \bigskip
-\uncover<2->{\PEPS{0} $=$ \alt<4->{\PEPS{2}}{\PEPS{1}}}
+\uncover<2->{\PEPS{0} $=$ \alt<3->{\PEPS{2}}{\PEPS{1}}
 
 \bigskip
-\uncover<3->{The symmetry acts on the \emph{entanglement} only: \emph{intrinsic topological quantum order}
+The symmetry acts on the \emph{entanglement} only: \emph{intrinsic topological quantum order}
 
 \bigskip
-Understanding symmetry requires understanding how it interacts with entanglement}
+Understanding symmetry requires understanding how it interacts with entanglement: \emph{generalized
+symmetry}
+}
 \end{frame}
 
 
@@ -63,15 +78,6 @@ The edge has phases and order of its own
 \uncover<2->{Always equivalent to an \emph{ordered} quantum magnet: \emph{dualities}}
 
 \medskip
-\uncover<3->{Not always as a \emph{disordered} magnet: \emph{anomalies}}
+\uncover<3->{Not always a \emph{disordered} magnet: \emph{anomalies}}
 
-\bigskip
-\uncover<4->{Curie's and Landau's richness is even greater in the quantum world}
-\end{frame}
-
-\begin{frame}{}
-    \centering
-    \vfill
-    {\LARGE Questions?}
-    \vfill
 \end{frame}

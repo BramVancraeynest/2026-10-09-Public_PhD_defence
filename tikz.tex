@@ -21,14 +21,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \Roadmap{v}: the three messages as stations along an arrow, each with its picture
 % v = 1, 2, 3: number of stations shown (the bounding box is fixed)
-\newcommand\Roadmap[1]{%
+\newcommand\Roadmap[2][0]{%
 \begin{tikzpicture}[
 	baseline={(current bounding box.center)},
 	station/.style={obj1, draw, circle, fill=UGentBlue, text=white, inner sep=0pt, minimum size={.9*\l*1cm}}
 	]
 	
 	\def\l{.5}
-	\def\v{#1}
+    \def\h{#1}    % station to highlight, 0 = none
+	\def\v{#2}
 	\def\d{8.5}    % distance between the stations
 
     \clip (-.1*\d*\l,-2) rectangle (3.1*\d*\l,3.5);
@@ -41,14 +42,45 @@
 	
 	% Stations: picture above, number on the arrow, message below
 	\foreach \k/\fig/\msg in {1/{\DiamondUnitCell}/\partI, 2/{\entangledpair{0}}/\partII, 3/{\PEPS{0}}/\partIII} {
-		\ifnum\k>\v \else
-			\node at ({(\k-.5)*\d*\l},{4*\l}) {\fig};
-			\node[station] at ({(\k-.5)*\d*\l},0) {\k};
-			\node[below, text width={3.6cm}, align=flush center] at ({(\k-.5)*\d*\l},{-.6*\l}) {\msg};
+        \ifnum\k>\v \else
+			% faded, unless this is the highlighted station (or none is highlighted)
+			\pgfmathsetmacro\o{(\h==0 || \h==\k) ? 1 : .2}
+			\begin{scope}[transparency group, opacity=\o]
+				\node at ({(\k-.5)*\d*\l},{4*\l}) {\fig};
+				\node[station] at ({(\k-.5)*\d*\l},0) {\k};
+				\node[below, text width={3.6cm}, align=flush center] at ({(\k-.5)*\d*\l},{-.6*\l}) {\msg};
+			\end{scope}
 		\fi
 	}
 	
 \end{tikzpicture}}
+\newcommand\barmagnet[4]{%
+	\begin{scope}
+		\clip[rounded corners={.25*#1*\l*1cm}] ({-#1*\l},{-#2*\l}) rectangle ({#1*\l},{#2*\l});
+		\fill[#3] ({-#1*\l},0) rectangle ({#1*\l},{#2*\l});
+		\fill[#4] ({-#1*\l},{-#2*\l}) rectangle ({#1*\l},0);
+	\end{scope}
+	\draw[obj1, rounded corners={.25*#1*\l*1cm}] ({-#1*\l},{-#2*\l}) rectangle ({#1*\l},{#2*\l});
+	\draw[obj1] ({-#1*\l},0) -- ({#1*\l},0);}
+
+% \BarMagnet: a bar magnet, lying slightly tilted, south pole left
+\newcommand\BarMagnet{%
+\begin{tikzpicture}[
+	baseline={(current bounding box.center)}
+	]
+	
+	\def\l{.8}
+	\def\w{.8}      % half-width
+	\def\h{1.45}    % half-length
+	
+	\begin{scope}[rotate=-70]
+		\barmagnet{\w}{\h}{red}{UGentBlue}
+		\node[white, rotate=20] at (0,{.55*\h*\l}) {N};
+		\node[white, rotate=20] at (0,{-.55*\h*\l}) {S};
+	\end{scope}
+	
+\end{tikzpicture}}
+
 \newcommand\FerroFade[1]{%
 \begin{tikzpicture}[
 	baseline={(current bounding box.center)}
@@ -96,7 +128,36 @@
 	\fi
 	
 \end{tikzpicture}}
-
+\newcommand\FerroFadeBars[1]{%
+\begin{tikzpicture}[
+	baseline={(current bounding box.center)}
+	]
+	
+	\def\l{.6}
+	\def\v{#1}
+	\def\tc{6}      % Tc lies between magnet \tc-1 and magnet \tc
+	\def\w{.3}      % half-width and half-length of a magnet (same shape as \BarMagnet)
+	\def\h{.55}
+	\colorlet{dead}{gray!30}
+	
+	% Bar magnets, from full colour to grey in equal steps up to Tc
+	\foreach \k in {0,...,9} {
+		\pgfmathtruncatemacro\p{100*max(1-\k/\tc,0)}
+		\begin{scope}[shift={({(\k+.5)*\l},{1.2*\l})}]
+			\barmagnet{\w}{\h}{red!\p!dead}{UGentBlue!\p!dead}
+		\end{scope}
+	}
+	
+	% Temperature axis
+	\draw[obj1, -{Latex}] (0,0) -- ({10.5*\l},0) node[right] {$T$};
+	\draw[obj1] ({\tc*\l},{-.15*\l}) -- ({\tc*\l},{.15*\l}) node[below=4pt] {$T_c$};
+	
+	\ifnum\v>0
+		\node[below=4pt] at ({\tc/2*\l},{.15*\l}) {ferro};
+		\node[below=4pt] at ({(\tc+10)/2*\l},{.15*\l}) {para};
+	\fi
+	
+\end{tikzpicture}}
 \newcommand{\magnet}[3]{\tikz[baseline=-0.55ex]{%
   \def\s{0.6em}
   \path (-0.65*\s,0) (0.65*\s,0);
@@ -175,12 +236,104 @@
 	
 \end{tikzpicture}}
 
-\newcommand\IceLattice[1]{%
+% \IceLattice: ice Ih seen from above, only the oxygen atoms with grey O-O bonds
+\newcommand\IceLattice{%
 \begin{tikzpicture}[
 	baseline={(current bounding box.center)}
 	]
 	
-	\def\v{#1}
+	\def\l{.27}       % cm per Angstrom
+	\def\a{4.5181}    % lattice constants (Angstrom)
+	\def\c{7.3560}
+	\def\z{.0625}     % position parameter of O
+	\def\ro{.3}       % radius of O (Angstrom)
+	\def\az{0}       % azimuth and elevation of the viewpoint
+	\def\el{72}       % (the atoms below are listed from back to front for this view)
+	
+	% Atoms and bonds. In this view no bond passes in front of an atom, so every bond goes on
+	% the layer bonds, behind all atoms, and only the atoms need the back-to-front order.
+	\pgfdeclarelayer{bonds}
+	\pgfsetlayers{bonds,main}
+	\def\O(##1){\filldraw[oxygen] (##1) circle ({\ro*\l*1cm});}
+	\def\bond(##1)(##2){\begin{pgfonlayer}{bonds}\draw[oo] (##1) -- (##2);\end{pgfonlayer}}
+	
+	\begin{scope}[
+		x={({\a*cos(\az)*\l*1cm},{-\a*sin(\az)*sin(\el)*\l*1cm})},
+		y={({-\a*(cos(\az)+sqrt(3)*sin(\az))/2*\l*1cm},{\a*(sin(\az)-sqrt(3)*cos(\az))/2*sin(\el)*\l*1cm})},
+		z={(0,{\c*cos(\el)*\l*1cm})},
+		halo/.style={preaction={draw, white, solid, line width=2pt}},
+		oxygen/.style={obj1, fill=gray!30},
+		oo/.style={obj1, gray!50, halo, shorten <={\ro*\l*1cm}, shorten >={\ro*\l*1cm}}
+		]
+		
+		
+		\O(-4/3,-5/3,-\z)
+		\O(-1/3,-5/3,-\z)
+		\bond(-5/3,-4/3,\z)(-4/3,-5/3,-\z)
+		\bond(-4/3,-5/3,-\z)(-2/3,-4/3,\z)
+		\bond(-2/3,-4/3,\z)(-1/3,-5/3,-\z)
+		\bond(1/3,-4/3,\z)(-1/3,-5/3,-\z)
+		\O(-4/3,-2/3,-\z)
+		\O(-1/3,-2/3,-\z)
+		\O(2/3,-2/3,-\z)
+		\bond(-5/3,-4/3,\z)(-4/3,-2/3,-\z)
+		\bond(-1/3,-2/3,-\z)(-2/3,-4/3,\z)
+		\bond(2/3,-2/3,-\z)(1/3,-4/3,\z)
+		\O(-5/3,-4/3,\z)
+		\O(-2/3,-4/3,\z)
+		\O(1/3,-4/3,\z)
+		\bond(-5/3,-1/3,\z)(-4/3,-2/3,-\z)
+		\bond(-4/3,-2/3,-\z)(-2/3,-1/3,\z)
+		\bond(-2/3,-1/3,\z)(-1/3,-2/3,-\z)
+		\bond(-1/3,-2/3,-\z)(1/3,-1/3,\z)
+		\bond(1/3,-1/3,\z)(2/3,-2/3,-\z)
+		\bond(4/3,-1/3,\z)(2/3,-2/3,-\z)
+		\O(-4/3,1/3,-\z)
+		\O(-1/3,1/3,-\z)
+		\O(2/3,1/3,-\z)
+		\O(5/3,1/3,-\z)
+		\bond(-4/3,1/3,-\z)(-5/3,-1/3,\z)
+		\bond(-1/3,1/3,-\z)(-2/3,-1/3,\z)
+		\bond(1/3,-1/3,\z)(2/3,1/3,-\z)
+		\bond(4/3,-1/3,\z)(5/3,1/3,-\z)
+		\O(-5/3,-1/3,\z)
+		\O(-2/3,-1/3,\z)
+		\O(1/3,-1/3,\z)
+		\O(4/3,-1/3,\z)
+		\bond(-4/3,1/3,-\z)(-2/3,2/3,\z)
+		\bond(-2/3,2/3,\z)(-1/3,1/3,-\z)
+		\bond(1/3,2/3,\z)(-1/3,1/3,-\z)
+		\bond(2/3,1/3,-\z)(1/3,2/3,\z)
+		\bond(2/3,1/3,-\z)(4/3,2/3,\z)
+		\bond(5/3,1/3,-\z)(4/3,2/3,\z)
+		\O(-1/3,4/3,-\z)
+		\O(2/3,4/3,-\z)
+		\O(5/3,4/3,-\z)
+		\bond(-1/3,4/3,-\z)(-2/3,2/3,\z)
+		\bond(1/3,2/3,\z)(2/3,4/3,-\z)
+		\bond(4/3,2/3,\z)(5/3,4/3,-\z)
+		\O(-2/3,2/3,\z)
+		\O(1/3,2/3,\z)
+		\O(4/3,2/3,\z)
+		\bond(1/3,5/3,\z)(-1/3,4/3,-\z)
+		\bond(2/3,4/3,-\z)(1/3,5/3,\z)
+		\bond(2/3,4/3,-\z)(4/3,5/3,\z)
+		\bond(4/3,5/3,\z)(5/3,4/3,-\z)
+		\O(1/3,5/3,\z)
+		\O(4/3,5/3,\z)
+		
+		
+	\end{scope}
+	
+\end{tikzpicture}}
+
+% \IceLatticeH: ice Ih seen from above, with the hydrogen atoms (one configuration obeying
+% the ice rules) on the grey O-O network
+\newcommand\IceLatticeH{%
+\begin{tikzpicture}[
+	baseline={(current bounding box.center)}
+	]
+	
 	\def\l{.27}       % cm per Angstrom
 	\def\a{4.5181}    % lattice constants (Angstrom)
 	\def\c{7.3560}
@@ -198,24 +351,18 @@
 	\pgfsetlayers{bonds,main}
 	\def\O(##1){\filldraw[oxygen] (##1) circle ({\ro*\l*1cm});}
 	\def\H(##1)(##2){\filldraw[hydrogen] ($(##1)!\t!(##2)$) circle ({\rh*\l*1cm});}
-	% bond from O to O; in version 1 a grey line of the hexagonal network with the O-H of
-	% the first O (the donor of the H) on top of it
+	% bond from O to O: a grey line of the hexagonal network with the O-H of the first O
+	% (the donor of the H) on top of it
 	\def\bond(##1)(##2){%
 		\begin{pgfonlayer}{bonds}
-			\ifnum\v=0
-				\draw[oo] (##1) -- (##2);
-			\else
-				\draw[lattice] (##1) -- (##2);
-				\draw[covalent] (##1) -- ($(##1)!\t!(##2)$);
-			\fi
+			\draw[lattice] (##1) -- (##2);
+			\draw[covalent] (##1) -- ($(##1)!\t!(##2)$);
 		\end{pgfonlayer}
-		\ifnum\v>0 \H(##1)(##2)\fi}
+		\H(##1)(##2)}
 	% bond to an O outside the picture (also up or down): only the O-H of a molecule inside
 	\def\dangling(##1)(##2){%
-		\ifnum\v>0
-			\begin{pgfonlayer}{bonds}\draw[covalent] (##1) -- ($(##1)!\t!(##2)$);\end{pgfonlayer}
-			\H(##1)(##2)
-		\fi}
+		\begin{pgfonlayer}{bonds}\draw[covalent] (##1) -- ($(##1)!\t!(##2)$);\end{pgfonlayer}
+		\H(##1)(##2)}
 	
 	\begin{scope}[
 		x={({\a*cos(\az)*\l*1cm},{-\a*sin(\az)*sin(\el)*\l*1cm})},
@@ -224,10 +371,10 @@
 		halo/.style={preaction={draw, white, solid, line width=2pt}},
 		oxygen/.style={obj1, fill=gray!30},
 		hydrogen/.style={obj1, fill=white},
-		oo/.style={obj1, halo, shorten <={\ro*\l*1cm}, shorten >={\ro*\l*1cm}},
 		covalent/.style={obj1, halo, shorten <={\ro*\l*1cm}, shorten >={\rh*\l*1cm}},
 		lattice/.style={obj1, gray!50}
 		]
+		
 		
 		\dangling(-1/3,-5/3,-\z)(-1/3,-5/3,-1/2+\z)
 		\O(-4/3,-5/3,-\z)
@@ -301,6 +448,7 @@
 		\O(1/3,5/3,\z)
 		\O(4/3,5/3,\z)
 		\dangling(1/3,5/3,\z)(1/3,5/3,1/2-\z)
+		
 		
 	\end{scope}
 	
@@ -661,6 +809,49 @@
 
 \end{tikzpicture}}
 
+% \newcommand\MagneticOrder[1]{%
+% \begin{tikzpicture}[
+% 	baseline={(current bounding box.center)}
+% 	]
+	
+% 	\def\l{.22}
+% 	\def\v{#1}
+% 	\def\Nx{6}      % magnets per row
+% 	\def\Ny{4}      % number of rows
+% 	\def\dx{2.2}    % horizontal distance between magnets
+% 	\def\dy{2.6}    % vertical distance between magnets
+% 	\def\s{15.4}    % shift of the grid above Tc; Tc lies halfway between the grids
+% 	% directions above Tc (fixed, so that every compilation looks the same)
+% 	\def\angles{{90,240,315,210,15,75,285,150,135,195,345,180,45,120,300,330,0,30,225,165,60,255,270,105}}
+	
+% 	% Fixed bounding box, so that all versions have the same size
+% 	\path (0,{-1.6*\l}) rectangle ({(2*\s+1.5)*\l},{(\Ny*\dy+1)*\l});
+	
+% 	% Tiny magnets: g = 0 below Tc, g = 1 above Tc
+% 	\foreach \g in {0,1} {
+% 		\ifnum\numexpr\g+1\relax>\v \else
+% 		\foreach \i in {1,...,\Nx} {
+% 			\foreach \j in {1,...,\Ny} {
+% 				\pgfmathsetmacro\a{\g==1 ? \angles[(\j-1)*\Nx+\i-1] : (\v==3 ? -90 : 90)}
+% 				\begin{scope}[shift={({(\g*\s+\i*\dx)*\l},{\j*\dy*\l})}, rotate=\a-90]
+% 					\fill[red] ({-.45*\l},0) -- (0,{\l}) -- ({.45*\l},0) -- cycle;
+% 					\fill[UGentBlue] ({-.45*\l},0) -- (0,{-\l}) -- ({.45*\l},0) -- cycle;
+% 					\draw[obj1] (0,{\l}) -- ({.45*\l},0) -- (0,{-\l}) -- ({-.45*\l},0) -- cycle;
+% 				\end{scope}
+% 			}
+% 		}
+% 		\fi
+% 	}
+	
+% 	% Temperature axis
+% 	\draw[obj1, -{Latex}] (0,0) -- ({(2*\s+1.5)*\l},0) node[right] {$T$};
+% 	\draw[obj1] ({\s*\l},{-.4*\l}) -- ({\s*\l},{.4*\l}) node[below=4pt] {$T_c$};
+% 	\node[below=4pt] at ({(\Nx+1)/2*\dx*\l},{.4*\l}) {aligned};
+% 	\ifnum\v>1
+% 		\node[below=4pt] at ({(\s+(\Nx+1)/2*\dx)*\l},{.4*\l}) {random};
+% 	\fi
+	
+% \end{tikzpicture}}
 \newcommand\MagneticOrder[1]{%
 \begin{tikzpicture}[
 	baseline={(current bounding box.center)}
@@ -668,39 +859,48 @@
 	
 	\def\l{.22}
 	\def\v{#1}
-	\def\Nx{6}      % magnets per row
-	\def\Ny{4}      % number of rows
-	\def\dx{2.2}    % horizontal distance between magnets
-	\def\dy{2.6}    % vertical distance between magnets
-	\def\s{15.4}    % shift of the grid above Tc; Tc lies halfway between the grids
+	\def\Nx{3}      % tiny magnets per row
+	\def\Ny{4}      % number of rows (even, so that no row lies on the line between the poles)
+	\def\dx{2.2}    % horizontal distance between tiny magnets
+	\def\dy{3.4}    % vertical distance between tiny magnets
+	\def\w{.45}     % half-width and half-length of a tiny magnet
+	\def\h{.82}
+	\def\W{3.85}    % half-width and half-length of the big magnet (same shape as \BarMagnet)
+	\def\H{6.85}
+	\def\s{15.4}    % distance between the two magnets; Tc lies halfway
 	% directions above Tc (fixed, so that every compilation looks the same)
-	\def\angles{{90,240,315,210,15,75,285,150,135,195,345,180,45,120,300,330,0,30,225,165,60,255,270,105}}
+	\def\angles{{90,240,315,210,15,75,285,150,135,195,345,180}}
 	
 	% Fixed bounding box, so that all versions have the same size
-	\path (0,{-1.6*\l}) rectangle ({(2*\s+1.5)*\l},{(\Ny*\dy+1)*\l});
+	\path (0,{-1.6*\l}) rectangle ({(2*\s+1.5)*\l},{(2*\H+1.4)*\l});
 	
-	% Tiny magnets: g = 0 below Tc, g = 1 above Tc
+	% g = 0 below Tc: a magnet; g = 1 above Tc: grey, no magnet any more
 	\foreach \g in {0,1} {
 		\ifnum\numexpr\g+1\relax>\v \else
-		\foreach \i in {1,...,\Nx} {
-			\foreach \j in {1,...,\Ny} {
-				\pgfmathsetmacro\a{\g==1 ? \angles[(\j-1)*\Nx+\i-1] : (\v==3 ? -90 : 90)}
-				\begin{scope}[shift={({(\g*\s+\i*\dx)*\l},{\j*\dy*\l})}, rotate=\a-90]
-					\fill[red] ({-.45*\l},0) -- (0,{\l}) -- ({.45*\l},0) -- cycle;
-					\fill[UGentBlue] ({-.45*\l},0) -- (0,{-\l}) -- ({.45*\l},0) -- cycle;
-					\draw[obj1] (0,{\l}) -- ({.45*\l},0) -- (0,{-\l}) -- ({-.45*\l},0) -- cycle;
-				\end{scope}
+		\begin{scope}[shift={({(\g+.5)*\s*\l},{(\H+.9)*\l})}]
+			\ifnum\g=0
+				\barmagnet{\W}{\H}{red!25}{UGentBlue!25}
+			\else
+				\barmagnet{\W}{\H}{gray!15}{gray!15}
+			\fi
+			\foreach \i in {1,...,\Nx} {
+				\foreach \j in {1,...,\Ny} {
+					\pgfmathsetmacro\a{\g==1 ? \angles[(\j-1)*\Nx+\i-1] : 90}
+					\begin{scope}[shift={({(\i-(\Nx+1)/2)*\dx*\l},{(\j-(\Ny+1)/2)*\dy*\l})}, rotate=\a-90]
+						\barmagnet{\w}{\h}{red}{UGentBlue}
+					\end{scope}
+				}
 			}
-		}
+		\end{scope}
 		\fi
 	}
 	
 	% Temperature axis
 	\draw[obj1, -{Latex}] (0,0) -- ({(2*\s+1.5)*\l},0) node[right] {$T$};
 	\draw[obj1] ({\s*\l},{-.4*\l}) -- ({\s*\l},{.4*\l}) node[below=4pt] {$T_c$};
-	\node[below=4pt] at ({(\Nx+1)/2*\dx*\l},{.4*\l}) {aligned};
+	\node[below=4pt] at ({.5*\s*\l},{.4*\l}) {aligned};
 	\ifnum\v>1
-		\node[below=4pt] at ({(\s+(\Nx+1)/2*\dx)*\l},{.4*\l}) {random};
+		\node[below=4pt] at ({1.5*\s*\l},{.4*\l}) {random};
 	\fi
 	
 \end{tikzpicture}}
@@ -1027,7 +1227,7 @@
 	% min(2^N, a*N); on this axis log2(min(2^N, aN)) = min(N, log2(aN))
 	% (no 'smooth': the curve has a kink where 2^N = aN)
     \ifnum#1=1
-		\draw[obj2] plot[domain=\Nmin:\N, samples=200] ({\x/\N*\w*\l},{min(\x, ln(\a*\x)/ln(2))/\N*\h*\l})
+		\draw[obj1, UGentBlue] plot[domain=\Nmin:\N, samples=200] ({\x/\N*\w*\l},{min(\x, ln(\a*\x)/ln(2))/\N*\h*\l})
 		node[right, font=\footnotesize] {TN};
 	\fi
  
@@ -1078,7 +1278,7 @@
     line join=round, line width=0.4pt]
  
   % afmetingen in eenheden van de nopafstand (2x4 blokje)
-  \def\s{.5};
+  \def\s{.5}
   \def\lengte{4*\s}
   \def\breedte{2*\s}
   \def\hoogte{1.2*\s}
@@ -1086,12 +1286,12 @@
   \def\nop{0.2*\s}      % hoogte van een nop
  
   % zijvlakken
-  \begin{scope}[draw=UGentBlue!40!black]
-    \filldraw[fill=UGentBlue!80!black] (0,0,0) -- (\lengte,0,0)
+  \begin{scope}[draw=purple!40!black]
+    \filldraw[fill=purple!87!black] (0,0,0) -- (\lengte,0,0)
       -- (\lengte,0,\hoogte) -- (0,0,\hoogte) -- cycle;
-    \filldraw[fill=UGentBlue!65!black] (\lengte,0,0) -- (\lengte,\breedte,0)
+    \filldraw[fill=purple!75!black] (\lengte,0,0) -- (\lengte,\breedte,0)
       -- (\lengte,\breedte,\hoogte) -- (\lengte,0,\hoogte) -- cycle;
-    \filldraw[fill=UGentBlue] (0,0,\hoogte) -- (\lengte,0,\hoogte)
+    \filldraw[fill=purple] (0,0,\hoogte) -- (\lengte,0,\hoogte)
       -- (\lengte,\breedte,\hoogte) -- (0,\breedte,\hoogte) -- cycle;
   \end{scope}
  
@@ -1099,21 +1299,75 @@
   \foreach \j in {1,0}{
     \foreach \i in {0,...,3}{
       \begin{scope}[shift={(\i*\s+0.5*\s,\j*\s+0.5*\s,\hoogte)}, x=1cm, y=1cm,
-          draw=UGentBlue!40!black]
-        \shadedraw[left color=UGentBlue!90!black, right color=UGentBlue!60!black]
+          draw=purple!40!black]
+        \shadedraw[left color=purple!90!black, right color=purple!60!black]
           (-\straal,0)
           arc[start angle=180, end angle=360, x radius=\straal, y radius=0.5*\straal]
           -- (\straal,0,\nop)
           arc[start angle=0, end angle=-180, x radius=\straal, y radius=0.5*\straal]
           -- cycle;
-        \filldraw[fill=UGentBlue] (0,0,\nop)
+        \filldraw[fill=purple] (0,0,\nop)
           ellipse[x radius=\straal, y radius=0.5*\straal];
       \end{scope}
     }
   }
 \end{tikzpicture}%
 }
-
+\newcommand\EntanglementAxis{%
+\begin{tikzpicture}[
+	baseline={(current bounding box.center)}
+	]
+	
+	\def\l{.19}
+	\def\d{11}      % distance between the stations
+	\def\g{3}       % extra room around Bc
+	\def\a{3}       % lattice spacing
+	\def\y{6}       % height of the middle row above the axis
+	% per station: direction of the magnets (-1 = entangled, purple) and grey level of the bonds
+	\def\stations{{90,-1,-1,-1,-1,180}}
+	\def\greys{{0,35,85,85,35,0}}
+	
+	\foreach \k in {0,...,5} {
+		\pgfmathtruncatemacro\o{\stations[\k]}
+		\pgfmathtruncatemacro\w{\greys[\k]}
+		\pgfmathsetmacro\x{(\k+.5)*\d + (\k>2)*\g}
+		\begin{scope}[shift={({\x*\l},{\y*\l})}]
+			% bonds of the square lattice, also to the magnets outside the patch (cut off)
+			\ifnum\w>0
+				\begin{scope}
+				\clip ({-(\a+1.4)*\l},{-(\a+1.6)*\l}) rectangle ({(\a+1.4)*\l},{(\a+1.6)*\l});
+				\foreach \i in {-1,0,1} {
+					\foreach \j in {-2,-1,0,1} {
+						\draw[obj1, wiggly, draw=black!\w] ({(\j*\a+.45)*\l},{\i*\a*\l}) -- ({((\j+1)*\a-.45)*\l},{\i*\a*\l});
+						\draw[obj1, wiggly, draw=black!\w] ({\i*\a*\l},{(\j*\a+1)*\l}) -- ({\i*\a*\l},{((\j+1)*\a-1)*\l});
+					}
+				}
+				\end{scope}
+			\fi
+			% magnets
+			\foreach \i in {-1,0,1} {
+				\foreach \j in {-1,0,1} {
+					\begin{scope}[shift={({\i*\a*\l},{\j*\a*\l})}]
+						\ifnum\o<0
+							\qubitat{0}{purple}{purple}
+						\else
+							\begin{scope}[rotate=\o-90]
+								\qubitat{0}{red}{UGentBlue}
+							\end{scope}
+						\fi
+					\end{scope}
+				}
+			}
+		\end{scope}
+	}
+	
+    % Field axis, from 0 to infinity, with the critical point
+	\draw[obj1, -{Latex}] (0,0) -- ({(6*\d+\g)*\l},0) node[right] {$B$};
+	\draw[obj1] ({.5*\d*\l},{-.5*\l}) -- ({.5*\d*\l},{.5*\l}) node[below=4pt] {$0$};
+	\draw[obj1] ({(5.5*\d+\g)*\l},{-.5*\l}) -- ({(5.5*\d+\g)*\l},{.5*\l}) node[below=4pt] {$\infty$};
+	\draw[obj1] ({(3*\d+\g/2)*\l},{-.5*\l}) -- ({(3*\d+\g/2)*\l},{.5*\l}) node[below=4pt] {$B_c$};
+	
+\end{tikzpicture}}
 \newcommand{\PEPS}[1]{%
 \begin{tikzpicture}[
 	x={(1,0)}, z={(.47,.65)},

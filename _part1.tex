@@ -9,7 +9,7 @@
 \begin{tabular}{>{\centering\arraybackslash}p{.45\textwidth}>{\centering\arraybackslash}p{.45\textwidth}}
     \includegraphics[width=.7\linewidth]{figs/water.jpg} & \includegraphics[width=.7\linewidth]{figs/ice.jpg} \\
     \addlinespace[1.5em]
-    \Water & \IceLattice{1}
+    \Water & \IceLattice
 \end{tabular}
 }
 \end{frame}
@@ -25,32 +25,42 @@
 
 \medskip
 
-The \emph{ordering} of the atoms determines the macroscopic properties
+The \emph{ordering} of the atoms determines the macroscopic properties!
 \end{frame}
 
 \begin{frame}{Symmetry}
 \centering
-\includegraphics[height=2.6cm]{figs/Honeycomb.jpg}\qquad
-\includegraphics[height=2.6cm]{figs/Mosaic.jpg}
+\parbox[c][.8\textheight][c]{\textwidth}{\centering
+\begin{columns}[c]
+\column{.4\textwidth}
+\centering
+\only<1>{\DiamondUnitCell}%
+\only<2>{\includegraphics[height=2.6cm]{figs/Honeycomb.jpg}}
+\column{.4\textwidth}
+\centering
+\only<1>{\includegraphics[width=\linewidth,height=.7\textheight,keepaspectratio]{figs/SpaceGroups.png}}%
+\only<2>{\includegraphics[height=2.6cm]{figs/Mosaic.jpg}}
+\end{columns}
+\only<2>{%
 
 \bigskip
-
 \MexicanHat
 
 \bigskip
-Symmetry $=$ transformations that leave structure invariant
+Symmetry: shifts or rotations that leave a structure unchanged}}
 \end{frame}
 
 \begin{frame}{Order breaks symmetry}
 \centering
 \begin{tabular}{>{\centering\arraybackslash}p{.45\textwidth}>{\centering\arraybackslash}p{.45\textwidth}}
-	\Water & \IceLattice{1} \\
+	\Water & \IceLattice \\
 	\addlinespace[1em]
-	Water: continuous shifts and rotations & Ice: lattice translations and rotations
+	Continuous translations and rotations & Lattice translations and rotations \\
+    Disordered & Ordered
 \end{tabular}
 
 \bigskip
-\uncover<2->{More order $=$ less symmetry}
+More order $=$ less symmetry
 \end{frame}
 
 \begin{frame}{Curie \& Landau}
@@ -81,31 +91,36 @@ Symmetry $=$ transformations that leave structure invariant
 
 \bigskip
 \centering
-\uncover<3->{Even if the underlying physics is symmetric, phenomena often break this.}
+\uncover<3->{Even if the underlying physics is symmetric, phenomena often break those symmetries.}
 \end{frame}
 
 \begin{frame}{Ferromagnets}
 \begin{columns}[c]
 \column{.38\textwidth}
 \centering
-\includegraphics[height=3cm]{figs/Magnet}
+% \includegraphics[height=3cm]{figs/Magnet}
+\BarMagnet
 \column{.6\textwidth}
 \centering
-\uncover<2->{\FerroFade{1}}
+\FerroFadeBars{1}
 \end{columns}
 
 \bigskip
 \begin{columns}[c]
 \column{.38\textwidth}
 \centering
-\uncover<3->{Could a magnet be made of many tiny magnets?}
+\pause
+Could a magnet be made of many tiny magnets?
 
 \medskip
-\uncover<6->{But what \emph{is} one tiny magnet?}
+\pause
+Could an atom be one tiny magnet?
+
+\smallskip
+What about \emph{low temperature}?
 \column{.6\textwidth}
 \centering
-\uncover<4->{%
-	\only<-4>{\MagneticOrder{1}}%
-	\only<5->{\MagneticOrder{2}}}
+\onslide<2->
+\MagneticOrder{2}
 \end{columns}
 \end{frame}

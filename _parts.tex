@@ -1,13 +1,6 @@
-% \newpart{n}: announces part n (1, 2 or 3); the other two messages are grey
+% \newpart{n}: announces part n (1, 2 or 3) with the roadmap, station n highlighted
 \newcommand\newpart[1]{%
 \begin{frame}{Part #1}
 \centering
-\def\v{#1}
-{\ifnum\v=1 \else\color{gray}\fi \partI}
-
-\bigskip
-{\ifnum\v=2 \else\color{gray}\fi \partII}
-
-\bigskip
-{\ifnum\v=3 \else\color{gray}\fi \partIII}
+\Roadmap[#1]{3}
 \end{frame}}

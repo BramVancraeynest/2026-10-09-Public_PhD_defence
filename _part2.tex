@@ -1,6 +1,6 @@
 \begin{frame}{Stern \& Gerlach}
 \begin{columns}[c]
-\column{0.52\textwidth}
+\column{0.48\textwidth}
 Shoot silver atoms through a magnetic field along the `up-down' ($Z$) direction
 
 \bigskip Naively, one expects a smeared-out distribution
@@ -16,7 +16,7 @@ Rotate the magnets to the `left-right' ($X$) direction: again two beams}
 \uncover<7->
 {\bigskip
 Predetermined outcomes for $X$ and $Z$ measurements?}
-\column{0.45\textwidth}
+\column{0.51\textwidth}
 \centering
 \only<1>{\sterngerlach{0}}%
 \only<2>{\sterngerlach{1}}%
@@ -49,17 +49,19 @@ Predetermined outcomes for $X$ and $Z$ measurements?}
 
 \bigskip
 \uncover<5->{%
-\alt<6->{%
-$|{\spinright}\ra = \tfrac{1}{\sqrt{2}}\,|{\spinup}\ra + \tfrac{1}{\sqrt{2}}\,|{\spindown}\ra$ is a \emph{superposition},
+% \alt<6->{%
+% $|{\spinright}\ra = \tfrac{1}{\sqrt{2}}\,|{\spinup}\ra + \tfrac{1}{\sqrt{2}}\,|{\spindown}\ra$ is a \emph{superposition},
+
+% \medskip
+% but so is $|{\spinup}\ra = \tfrac{1}{\sqrt{2}}\,|{\spinleft}\ra + \tfrac{1}{\sqrt{2}}\,|{\spinright}\ra$%
+% }
+% {%
+$\spinright = \spinup + \spindown\vphantom{\tfrac{1}{\sqrt{2}}}$ is a \emph{superposition},
 
 \medskip
-but so is $|{\spinup}\ra = \tfrac{1}{\sqrt{2}}\,|{\spinleft}\ra + \tfrac{1}{\sqrt{2}}\,|{\spinright}\ra$%
-}{%
-$\spinright = (50\%)\ \spinup + (50\%)\ \spindown\vphantom{\tfrac{1}{\sqrt{2}}}$ is a \emph{superposition},
-
-\medskip
-but so is $\spinup = (50\%)\ \spinleft + (50\%)\ \spinright\vphantom{\tfrac{1}{\sqrt{2}}}$%
-}}
+but so is $\spinup = \spinleft + \spinright\vphantom{\tfrac{1}{\sqrt{2}}}$%
+}
+% }
 \end{frame}
 
 
@@ -72,12 +74,15 @@ Two waves add up: they reinforce or cancel each other
 \bigskip
 This is called \emph{interference}
 
+\uncover<2>{
 \bigskip
 The quantum wave: $|\psi\ra = a\,|{\spinup}\ra + b\,|{\spindown}\ra$
+}
 \column{0.45\textwidth}
 \centering
-\only<1>{\includegraphics[width=0.85\textwidth]{figs/water_waves.jpg}}
-\only<2>{\WaterWaves}
+\parbox[c][3.2cm][c]{\linewidth}{\centering
+\only<1>{\includegraphics[width=0.85\textwidth]{figs/water_waves.jpg}}%
+\only<2>{\WaterWaves}}
 \end{columns}
 \end{frame}
 
@@ -100,7 +105,7 @@ The quantum wave: $|\psi\ra = a\,|{\spinup}\ra + b\,|{\spindown}\ra$
 \begin{frame}{Two particles}
 \begin{columns}[c]
 \column{0.45\textwidth}
-2 particles: four possibilities: \par
+2 particles: 4 possibilities: \par
 $|{\spinup\spinup}\ra$, $|{\spinup\spindown}\ra$, $|{\spindown\spinup}\ra$, $|{\spindown\spindown}\ra$
 
 \bigskip
@@ -111,8 +116,6 @@ Quantum physics dictates: any superposition should be considered:
 
 \uncover<2->{
 \column{0.54\textwidth}
-\centering
-For $N$ particles: $2^N$ numbers needed!
 \TwoToTheN[0]
 }
 \end{columns}
@@ -157,6 +160,9 @@ Let us now consider the state
 \]
 
 \uncover<4>{
+\bigskip
+This state is (maximally) \emph{entangled}.
+
 \bigskip
 {\it [...] the best possible knowledge of a whole does not necessarily include the best possible knowledge of all its parts [...]}
 

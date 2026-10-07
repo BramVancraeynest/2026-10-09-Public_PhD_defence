@@ -81,7 +81,10 @@
 
 \definecolor{UGentBlue}{RGB}{30,100,200}
 \definecolor{UGentYellow}{RGB}{255,210,0}
-\colorlet{purple}{BlueViolet!40} 
+\colorlet{purple}{BlueViolet!40}
+\colorlet{phasecol}{UGentBlue}
+\colorlet{gaugecol}{BrickRed}
+\definecolor{toolcol}{RGB}{90,90,90}
 % red!35!UGentBlue
 %\setbeamercolor{frametitle}{fg=UGentBlue, bg=gray!12}
 \setbeamercolor{title}{fg=UGentBlue}
@@ -89,7 +92,7 @@
 
 
 \setbeamertemplate{frametitle}{
-\vspace{10pt}\color{UGentBlue}\bf\centering\centerline{\underline{\insertframetitle}}}
+\vspace{10pt}\color{UGentBlue}\bf\centering\centerline{\underline{\vphantom{g}\insertframetitle}}}
 %\\\vspace{-6pt}\hrulefill
 
 \renewcommand\thefootnote{\textcolor{UGentBlue}{\arabic{footnote}}}
