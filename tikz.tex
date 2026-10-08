@@ -525,164 +525,243 @@
 \end{tikzpicture}
 }
 
-\newcommand{\CalciteUnitCell}{
+% \newcommand{\CalciteUnitCell}{
+% \begin{tikzpicture}[
+% 	baseline={(current bounding box.center)}
+% 	]
+	
+% 	\def\l{.3}
+% 	\def\rca{.35}  % radius of Ca
+% 	\def\rc{.15}   % radius of C
+% 	\def\ro{.22}   % radius of O
+% 	\def\a{10}     % azimuth
+% 	\def\e{12}     % elevation
+	
+% 	% Calcite (R-3c) in a hexagonal prism of three hexagonal cells, lower half (0 <= z <= c/2), c-axis vertical.
+% 	% a = 4.99, c = 17.06 Angstrom, drawn with 4 units per a.
+% 	% Ca (grey), C (black) and O (white); every CO3 group is a flat triangle perpendicular to c.
+% 	% Edges, atoms and bonds are listed from back to front for this view, every bond before its own atoms;
+% 	% after a change of \a or \e the order has to be redone.
+% 	\begin{scope}[
+% 		x={({cos(\a)*\l*1cm},{-sin(\a)*sin(\e)*\l*1cm})},
+% 		y={({sin(\a)*\l*1cm},{cos(\a)*sin(\e)*\l*1cm})},
+% 		z={(0,{cos(\e)*\l*1cm})},
+% 		halo/.style={preaction={draw, white, solid, line width=2pt}},
+% 		edge/.style={obj1, gray!50, halo},
+% 		ca/.style={obj1, fill=gray!30},
+% 		carbon/.style={obj1, fill=black},
+% 		oxygen/.style={obj1, fill=white},
+% 		bond/.style={obj1, halo, shorten <={\rc*\l*1cm}, shorten >={\ro*\l*1cm}}
+% 		]
+		
+% 		% Edges that pass in front of nothing; the other edges follow at their depth
+% 		\foreach \p/\q in {{2.00,3.46,0.00}/{-2.00,3.46,0.00}, {-2.00,3.46,0.00}/{-4.00,0.00,0.00}, {2.00,3.46,6.84}/{-2.00,3.46,6.84}, {4.00,0.00,0.00}/{2.00,3.46,0.00}, {-2.00,3.46,6.84}/{-4.00,0.00,6.84}, {4.00,0.00,6.84}/{2.00,3.46,6.84}, {-4.00,0.00,0.00}/{-2.00,-3.46,0.00}, {2.00,-3.46,0.00}/{4.00,0.00,0.00}, {-4.00,0.00,6.84}/{-2.00,-3.46,6.84}, {-2.00,-3.46,0.00}/{2.00,-3.46,0.00}} {
+% 			\draw[edge] (\p) -- (\q);
+% 		}
+		
+% 		\draw[bond] (-2.00,3.46,3.42) -- (-2.51,4.35,3.42);
+% 		\filldraw[oxygen] (-2.51,4.35,3.42) circle ({\ro*\l*1cm});
+% 		\draw[edge] (-2.00,3.46,0.00) -- (-2.00,3.46,6.84);
+% 		\filldraw[ca] (-2.00,3.46,0.00) circle ({\rca*\l*1cm});
+% 		\draw[bond] (-2.00,3.46,3.42) -- (-0.97,3.46,3.42);
+% 		\filldraw[oxygen] (-0.97,3.46,3.42) circle ({\ro*\l*1cm});
+% 		\draw[bond] (2.00,3.46,3.42) -- (1.49,4.35,3.42);
+% 		\filldraw[oxygen] (1.49,4.35,3.42) circle ({\ro*\l*1cm});
+% 		\draw[edge] (2.00,3.46,0.00) -- (2.00,3.46,6.84);
+% 		\draw[edge] (2.00,-3.46,6.84) -- (4.00,0.00,6.84);
+% 		\filldraw[ca] (2.00,3.46,0.00) circle ({\rca*\l*1cm});
+% 		\draw[bond] (-2.00,3.46,3.42) -- (-2.51,2.57,3.42);
+% 		\filldraw[carbon] (-2.00,3.46,3.42) circle ({\rc*\l*1cm});
+% 		\filldraw[ca] (-2.00,3.46,6.84) circle ({\rca*\l*1cm});
+% 		\draw[bond] (2.00,3.46,3.42) -- (3.03,3.46,3.42);
+% 		\filldraw[oxygen] (-2.51,2.57,3.42) circle ({\ro*\l*1cm});
+% 		\filldraw[oxygen] (3.03,3.46,3.42) circle ({\ro*\l*1cm});
+% 		\draw[bond] (2.00,3.46,3.42) -- (1.49,2.57,3.42);
+% 		\filldraw[carbon] (2.00,3.46,3.42) circle ({\rc*\l*1cm});
+% 		\filldraw[ca] (0.00,2.31,2.28) circle ({\rca*\l*1cm});
+% 		\draw[bond] (-2.00,1.15,1.14) -- (-1.49,2.04,1.14);
+% 		\filldraw[oxygen] (-1.49,2.04,1.14) circle ({\ro*\l*1cm});
+% 		\filldraw[ca] (2.00,3.46,6.84) circle ({\rca*\l*1cm});
+% 		\filldraw[oxygen] (1.49,2.57,3.42) circle ({\ro*\l*1cm});
+% 		\draw[bond] (0.00,2.31,5.70) -- (0.51,3.20,5.70);
+% 		\filldraw[oxygen] (0.51,3.20,5.70) circle ({\ro*\l*1cm});
+% 		\draw[bond] (-2.00,1.15,1.14) -- (-3.03,1.15,1.14);
+% 		\filldraw[oxygen] (-3.03,1.15,1.14) circle ({\ro*\l*1cm});
+% 		\draw[bond] (0.00,2.31,5.70) -- (-1.03,2.31,5.70);
+% 		\filldraw[oxygen] (-1.03,2.31,5.70) circle ({\ro*\l*1cm});
+% 		\draw[bond] (2.00,1.15,1.14) -- (2.51,2.04,1.14);
+% 		\filldraw[oxygen] (2.51,2.04,1.14) circle ({\ro*\l*1cm});
+% 		\draw[bond] (-2.00,1.15,1.14) -- (-1.49,0.26,1.14);
+% 		\filldraw[carbon] (-2.00,1.15,1.14) circle ({\rc*\l*1cm});
+% 		\draw[bond] (2.00,1.15,1.14) -- (0.97,1.15,1.14);
+% 		\filldraw[oxygen] (0.97,1.15,1.14) circle ({\ro*\l*1cm});
+% 		\draw[bond] (0.00,2.31,5.70) -- (0.51,1.42,5.70);
+% 		\filldraw[carbon] (0.00,2.31,5.70) circle ({\rc*\l*1cm});
+% 		\filldraw[ca] (-2.00,1.15,4.56) circle ({\rca*\l*1cm});
+% 		\draw[bond] (-4.00,0.00,3.42) -- (-4.51,0.89,3.42);
+% 		\filldraw[oxygen] (-4.51,0.89,3.42) circle ({\ro*\l*1cm});
+% 		\draw[edge] (-4.00,0.00,0.00) -- (-4.00,0.00,6.84);
+% 		\filldraw[ca] (-4.00,0.00,0.00) circle ({\rca*\l*1cm});
+% 		\filldraw[oxygen] (-1.49,0.26,1.14) circle ({\ro*\l*1cm});
+% 		\filldraw[oxygen] (0.51,1.42,5.70) circle ({\ro*\l*1cm});
+% 		\draw[edge] (-2.00,-3.46,6.84) -- (2.00,-3.46,6.84);
+% 		\draw[bond] (2.00,1.15,1.14) -- (2.51,0.26,1.14);
+% 		\filldraw[carbon] (2.00,1.15,1.14) circle ({\rc*\l*1cm});
+% 		\filldraw[ca] (0.00,0.00,0.00) circle ({\rca*\l*1cm});
+% 		\draw[bond] (-4.00,0.00,3.42) -- (-2.97,0.00,3.42);
+% 		\filldraw[ca] (2.00,1.15,4.56) circle ({\rca*\l*1cm});
+% 		\filldraw[oxygen] (-2.97,0.00,3.42) circle ({\ro*\l*1cm});
+% 		\draw[bond] (0.00,0.00,3.42) -- (-0.51,0.89,3.42);
+% 		\filldraw[oxygen] (-0.51,0.89,3.42) circle ({\ro*\l*1cm});
+% 		\filldraw[oxygen] (2.51,0.26,1.14) circle ({\ro*\l*1cm});
+% 		\draw[bond] (-4.00,0.00,3.42) -- (-4.51,-0.89,3.42);
+% 		\filldraw[carbon] (-4.00,0.00,3.42) circle ({\rc*\l*1cm});
+% 		\filldraw[ca] (-4.00,0.00,6.84) circle ({\rca*\l*1cm});
+% 		\draw[bond] (0.00,0.00,3.42) -- (1.03,0.00,3.42);
+% 		\filldraw[oxygen] (-4.51,-0.89,3.42) circle ({\ro*\l*1cm});
+% 		\filldraw[oxygen] (1.03,0.00,3.42) circle ({\ro*\l*1cm});
+% 		\draw[bond] (4.00,0.00,3.42) -- (3.49,0.89,3.42);
+% 		\filldraw[oxygen] (3.49,0.89,3.42) circle ({\ro*\l*1cm});
+% 		\draw[edge] (4.00,0.00,0.00) -- (4.00,0.00,6.84);
+% 		\filldraw[ca] (4.00,0.00,0.00) circle ({\rca*\l*1cm});
+% 		\draw[bond] (0.00,0.00,3.42) -- (-0.51,-0.89,3.42);
+% 		\filldraw[carbon] (0.00,0.00,3.42) circle ({\rc*\l*1cm});
+% 		\filldraw[ca] (-2.00,-1.15,2.28) circle ({\rca*\l*1cm});
+% 		\filldraw[ca] (0.00,0.00,6.84) circle ({\rca*\l*1cm});
+% 		\draw[bond] (4.00,0.00,3.42) -- (5.03,0.00,3.42);
+% 		\filldraw[oxygen] (-0.51,-0.89,3.42) circle ({\ro*\l*1cm});
+% 		\filldraw[oxygen] (5.03,0.00,3.42) circle ({\ro*\l*1cm});
+% 		\draw[bond] (-2.00,-1.15,5.70) -- (-1.49,-0.26,5.70);
+% 		\filldraw[oxygen] (-1.49,-0.26,5.70) circle ({\ro*\l*1cm});
+% 		\draw[bond] (4.00,0.00,3.42) -- (3.49,-0.89,3.42);
+% 		\filldraw[carbon] (4.00,0.00,3.42) circle ({\rc*\l*1cm});
+% 		\draw[bond] (-2.00,-1.15,5.70) -- (-3.03,-1.15,5.70);
+% 		\filldraw[oxygen] (-3.03,-1.15,5.70) circle ({\ro*\l*1cm});
+% 		\filldraw[ca] (2.00,-1.15,2.28) circle ({\rca*\l*1cm});
+% 		\draw[bond] (0.00,-2.31,1.14) -- (0.51,-1.42,1.14);
+% 		\filldraw[oxygen] (0.51,-1.42,1.14) circle ({\ro*\l*1cm});
+% 		\filldraw[ca] (4.00,0.00,6.84) circle ({\rca*\l*1cm});
+% 		\filldraw[oxygen] (3.49,-0.89,3.42) circle ({\ro*\l*1cm});
+% 		\draw[bond] (2.00,-1.15,5.70) -- (2.51,-0.26,5.70);
+% 		\filldraw[oxygen] (2.51,-0.26,5.70) circle ({\ro*\l*1cm});
+% 		\draw[bond] (0.00,-2.31,1.14) -- (-1.03,-2.31,1.14);
+% 		\filldraw[oxygen] (-1.03,-2.31,1.14) circle ({\ro*\l*1cm});
+% 		\draw[bond] (-2.00,-1.15,5.70) -- (-1.49,-2.04,5.70);
+% 		\filldraw[carbon] (-2.00,-1.15,5.70) circle ({\rc*\l*1cm});
+% 		\draw[bond] (2.00,-1.15,5.70) -- (0.97,-1.15,5.70);
+% 		\filldraw[oxygen] (0.97,-1.15,5.70) circle ({\ro*\l*1cm});
+% 		\filldraw[oxygen] (-1.49,-2.04,5.70) circle ({\ro*\l*1cm});
+% 		\draw[bond] (0.00,-2.31,1.14) -- (0.51,-3.20,1.14);
+% 		\filldraw[carbon] (0.00,-2.31,1.14) circle ({\rc*\l*1cm});
+% 		\draw[bond] (2.00,-1.15,5.70) -- (2.51,-2.04,5.70);
+% 		\filldraw[carbon] (2.00,-1.15,5.70) circle ({\rc*\l*1cm});
+% 		\filldraw[ca] (0.00,-2.31,4.56) circle ({\rca*\l*1cm});
+% 		\draw[bond] (-2.00,-3.46,3.42) -- (-2.51,-2.57,3.42);
+% 		\filldraw[oxygen] (-2.51,-2.57,3.42) circle ({\ro*\l*1cm});
+% 		\draw[edge] (-2.00,-3.46,0.00) -- (-2.00,-3.46,6.84);
+% 		\filldraw[ca] (-2.00,-3.46,0.00) circle ({\rca*\l*1cm});
+% 		\filldraw[oxygen] (0.51,-3.20,1.14) circle ({\ro*\l*1cm});
+% 		\filldraw[oxygen] (2.51,-2.04,5.70) circle ({\ro*\l*1cm});
+% 		\draw[bond] (-2.00,-3.46,3.42) -- (-0.97,-3.46,3.42);
+% 		\filldraw[oxygen] (-0.97,-3.46,3.42) circle ({\ro*\l*1cm});
+% 		\draw[bond] (2.00,-3.46,3.42) -- (1.49,-2.57,3.42);
+% 		\filldraw[oxygen] (1.49,-2.57,3.42) circle ({\ro*\l*1cm});
+% 		\draw[edge] (2.00,-3.46,0.00) -- (2.00,-3.46,6.84);
+% 		\filldraw[ca] (2.00,-3.46,0.00) circle ({\rca*\l*1cm});
+% 		\draw[bond] (-2.00,-3.46,3.42) -- (-2.51,-4.35,3.42);
+% 		\filldraw[carbon] (-2.00,-3.46,3.42) circle ({\rc*\l*1cm});
+% 		\filldraw[ca] (-2.00,-3.46,6.84) circle ({\rca*\l*1cm});
+% 		\draw[bond] (2.00,-3.46,3.42) -- (3.03,-3.46,3.42);
+% 		\filldraw[oxygen] (-2.51,-4.35,3.42) circle ({\ro*\l*1cm});
+% 		\filldraw[oxygen] (3.03,-3.46,3.42) circle ({\ro*\l*1cm});
+% 		\draw[bond] (2.00,-3.46,3.42) -- (1.49,-4.35,3.42);
+% 		\filldraw[carbon] (2.00,-3.46,3.42) circle ({\rc*\l*1cm});
+% 		\filldraw[ca] (2.00,-3.46,6.84) circle ({\rca*\l*1cm});
+% 		\filldraw[oxygen] (1.49,-4.35,3.42) circle ({\ro*\l*1cm});
+		
+% 	\end{scope}
+	
+% \end{tikzpicture}
+% }
+\newcommand{\CalciteUnitCell}{%
 \begin{tikzpicture}[
 	baseline={(current bounding box.center)}
 	]
 	
-	\def\l{.3}
-	\def\rca{.35}  % radius of Ca
-	\def\rc{.15}   % radius of C
-	\def\ro{.22}   % radius of O
-	\def\a{10}     % azimuth
-	\def\e{12}     % elevation
+	\def\l{.15}       % cm per Angstrom
+	\def\a{4.99}      % lattice constants (Angstrom)
+	\def\c{17.06}
+	\def\xo{.257}     % position parameter of O (C-O = \xo\a = 1.28 Angstrom)
+	\def\rca{.6}      % radii (Angstrom)
+	\def\rc{.25}
+	\def\ro{.4}
+	\def\el{10}       % elevation of the viewpoint (the list below is ordered back to front for this view)
 	
-	% Calcite (R-3c) in a hexagonal prism of three hexagonal cells, lower half (0 <= z <= c/2), c-axis vertical.
-	% a = 4.99, c = 17.06 Angstrom, drawn with 4 units per a.
-	% Ca (grey), C (black) and O (white); every CO3 group is a flat triangle perpendicular to c.
-	% Edges, atoms and bonds are listed from back to front for this view, every bond before its own atoms;
-	% after a change of \a or \e the order has to be redone.
+	% Calcite (R-3c): one hexagonal cell, a1 to the left, a2 to the back right, c up, seen perpendicular to a1.
+	% Every atom sits at its fractional coordinates (u,v,w): Ca at (0,0,0), C at (0,0,1/4), O at (\xo,0,1/4)
+	% and their images under R-3c. Besides the content of the cell, the CO3 groups around the two Ca columns
+	% inside the cell are drawn (marked "outside the cell").
+	\def\Ca(##1){\filldraw[ca] (##1) circle ({\rca*\l*1cm});}
+	\def\C(##1){\filldraw[carbon] (##1) circle ({\rc*\l*1cm});}
+	\def\O(##1){\filldraw[oxygen] (##1) circle ({\ro*\l*1cm});}
+	% CO3 group with C at (u,v,w) and O at (u+s\xo,v,w), (u,v+s\xo,w), (u-s\xo,v-s\xo,w), s = 1 or -1;
+	% \COback draws the O behind the C, \COfront the rest
+	\def\COpts(##1,##2,##3)##4{%
+		\def\Cp{##1,##2,##3}%
+		\ifnum##4>0 \def\Ob{##1,##2+\xo,##3}\def\Os{##1+\xo,##2,##3}\def\Of{##1-\xo,##2-\xo,##3}%
+		\else \def\Ob{##1+\xo,##2+\xo,##3}\def\Os{##1-\xo,##2,##3}\def\Of{##1,##2-\xo,##3}\fi}
+	\def\COback(##1)##2{\COpts(##1){##2}\draw[bond] (\Cp) -- (\Ob); \O(\Ob)}
+	\def\COfront(##1)##2{\COpts(##1){##2}\draw[bond] (\Cp) -- (\Os); \O(\Os) \draw[bond] (\Cp) -- (\Of); \C(\Cp) \O(\Of)}
+	\def\CO(##1)##2{\COback(##1){##2}\COfront(##1){##2}}
+	% vertical edge of the cell with the atoms on it: Ca at w = 0, 1/2, 1 and CO3 at w = 1/4, 3/4
+	\def\Column(##1,##2){%
+		\COback(##1,##2,1/4){1}\COback(##1,##2,3/4){-1}
+		\draw[edge] (##1,##2,0) -- (##1,##2,1);
+		\COfront(##1,##2,1/4){1}\COfront(##1,##2,3/4){-1}
+		\Ca(##1,##2,0)\Ca(##1,##2,1/2)\Ca(##1,##2,1)}
+	
 	\begin{scope}[
-		x={({cos(\a)*\l*1cm},{-sin(\a)*sin(\e)*\l*1cm})},
-		y={({sin(\a)*\l*1cm},{cos(\a)*sin(\e)*\l*1cm})},
-		z={(0,{cos(\e)*\l*1cm})},
+		x={({-\a*\l*1cm},0)},
+		y={({\a/2*\l*1cm},{sqrt(3)/2*\a*sin(\el)*\l*1cm})},
+		z={(0,{\c*cos(\el)*\l*1cm})},
 		halo/.style={preaction={draw, white, solid, line width=2pt}},
-		edge/.style={obj1, gray!50, halo},
+		edge/.style={obj1, gray!50},
 		ca/.style={obj1, fill=gray!30},
 		carbon/.style={obj1, fill=black},
 		oxygen/.style={obj1, fill=white},
 		bond/.style={obj1, halo, shorten <={\rc*\l*1cm}, shorten >={\ro*\l*1cm}}
 		]
 		
-		% Edges that pass in front of nothing; the other edges follow at their depth
-		\foreach \p/\q in {{2.00,3.46,0.00}/{-2.00,3.46,0.00}, {-2.00,3.46,0.00}/{-4.00,0.00,0.00}, {2.00,3.46,6.84}/{-2.00,3.46,6.84}, {4.00,0.00,0.00}/{2.00,3.46,0.00}, {-2.00,3.46,6.84}/{-4.00,0.00,6.84}, {4.00,0.00,6.84}/{2.00,3.46,6.84}, {-4.00,0.00,0.00}/{-2.00,-3.46,0.00}, {2.00,-3.46,0.00}/{4.00,0.00,0.00}, {-4.00,0.00,6.84}/{-2.00,-3.46,6.84}, {-2.00,-3.46,0.00}/{2.00,-3.46,0.00}} {
+		% edges of the cell behind everything
+		\foreach \p/\q in {{1,1,0}/{0,1,0}, {1,0,0}/{1,1,0}, {0,1,0}/{0,0,0}, {1,1,1}/{0,1,1}, {1,0,1}/{1,1,1}, {0,1,1}/{0,0,1}}
 			\draw[edge] (\p) -- (\q);
-		}
-		
-		\draw[bond] (-2.00,3.46,3.42) -- (-2.51,4.35,3.42);
-		\filldraw[oxygen] (-2.51,4.35,3.42) circle ({\ro*\l*1cm});
-		\draw[edge] (-2.00,3.46,0.00) -- (-2.00,3.46,6.84);
-		\filldraw[ca] (-2.00,3.46,0.00) circle ({\rca*\l*1cm});
-		\draw[bond] (-2.00,3.46,3.42) -- (-0.97,3.46,3.42);
-		\filldraw[oxygen] (-0.97,3.46,3.42) circle ({\ro*\l*1cm});
-		\draw[bond] (2.00,3.46,3.42) -- (1.49,4.35,3.42);
-		\filldraw[oxygen] (1.49,4.35,3.42) circle ({\ro*\l*1cm});
-		\draw[edge] (2.00,3.46,0.00) -- (2.00,3.46,6.84);
-		\draw[edge] (2.00,-3.46,6.84) -- (4.00,0.00,6.84);
-		\filldraw[ca] (2.00,3.46,0.00) circle ({\rca*\l*1cm});
-		\draw[bond] (-2.00,3.46,3.42) -- (-2.51,2.57,3.42);
-		\filldraw[carbon] (-2.00,3.46,3.42) circle ({\rc*\l*1cm});
-		\filldraw[ca] (-2.00,3.46,6.84) circle ({\rca*\l*1cm});
-		\draw[bond] (2.00,3.46,3.42) -- (3.03,3.46,3.42);
-		\filldraw[oxygen] (-2.51,2.57,3.42) circle ({\ro*\l*1cm});
-		\filldraw[oxygen] (3.03,3.46,3.42) circle ({\ro*\l*1cm});
-		\draw[bond] (2.00,3.46,3.42) -- (1.49,2.57,3.42);
-		\filldraw[carbon] (2.00,3.46,3.42) circle ({\rc*\l*1cm});
-		\filldraw[ca] (0.00,2.31,2.28) circle ({\rca*\l*1cm});
-		\draw[bond] (-2.00,1.15,1.14) -- (-1.49,2.04,1.14);
-		\filldraw[oxygen] (-1.49,2.04,1.14) circle ({\ro*\l*1cm});
-		\filldraw[ca] (2.00,3.46,6.84) circle ({\rca*\l*1cm});
-		\filldraw[oxygen] (1.49,2.57,3.42) circle ({\ro*\l*1cm});
-		\draw[bond] (0.00,2.31,5.70) -- (0.51,3.20,5.70);
-		\filldraw[oxygen] (0.51,3.20,5.70) circle ({\ro*\l*1cm});
-		\draw[bond] (-2.00,1.15,1.14) -- (-3.03,1.15,1.14);
-		\filldraw[oxygen] (-3.03,1.15,1.14) circle ({\ro*\l*1cm});
-		\draw[bond] (0.00,2.31,5.70) -- (-1.03,2.31,5.70);
-		\filldraw[oxygen] (-1.03,2.31,5.70) circle ({\ro*\l*1cm});
-		\draw[bond] (2.00,1.15,1.14) -- (2.51,2.04,1.14);
-		\filldraw[oxygen] (2.51,2.04,1.14) circle ({\ro*\l*1cm});
-		\draw[bond] (-2.00,1.15,1.14) -- (-1.49,0.26,1.14);
-		\filldraw[carbon] (-2.00,1.15,1.14) circle ({\rc*\l*1cm});
-		\draw[bond] (2.00,1.15,1.14) -- (0.97,1.15,1.14);
-		\filldraw[oxygen] (0.97,1.15,1.14) circle ({\ro*\l*1cm});
-		\draw[bond] (0.00,2.31,5.70) -- (0.51,1.42,5.70);
-		\filldraw[carbon] (0.00,2.31,5.70) circle ({\rc*\l*1cm});
-		\filldraw[ca] (-2.00,1.15,4.56) circle ({\rca*\l*1cm});
-		\draw[bond] (-4.00,0.00,3.42) -- (-4.51,0.89,3.42);
-		\filldraw[oxygen] (-4.51,0.89,3.42) circle ({\ro*\l*1cm});
-		\draw[edge] (-4.00,0.00,0.00) -- (-4.00,0.00,6.84);
-		\filldraw[ca] (-4.00,0.00,0.00) circle ({\rca*\l*1cm});
-		\filldraw[oxygen] (-1.49,0.26,1.14) circle ({\ro*\l*1cm});
-		\filldraw[oxygen] (0.51,1.42,5.70) circle ({\ro*\l*1cm});
-		\draw[edge] (-2.00,-3.46,6.84) -- (2.00,-3.46,6.84);
-		\draw[bond] (2.00,1.15,1.14) -- (2.51,0.26,1.14);
-		\filldraw[carbon] (2.00,1.15,1.14) circle ({\rc*\l*1cm});
-		\filldraw[ca] (0.00,0.00,0.00) circle ({\rca*\l*1cm});
-		\draw[bond] (-4.00,0.00,3.42) -- (-2.97,0.00,3.42);
-		\filldraw[ca] (2.00,1.15,4.56) circle ({\rca*\l*1cm});
-		\filldraw[oxygen] (-2.97,0.00,3.42) circle ({\ro*\l*1cm});
-		\draw[bond] (0.00,0.00,3.42) -- (-0.51,0.89,3.42);
-		\filldraw[oxygen] (-0.51,0.89,3.42) circle ({\ro*\l*1cm});
-		\filldraw[oxygen] (2.51,0.26,1.14) circle ({\ro*\l*1cm});
-		\draw[bond] (-4.00,0.00,3.42) -- (-4.51,-0.89,3.42);
-		\filldraw[carbon] (-4.00,0.00,3.42) circle ({\rc*\l*1cm});
-		\filldraw[ca] (-4.00,0.00,6.84) circle ({\rca*\l*1cm});
-		\draw[bond] (0.00,0.00,3.42) -- (1.03,0.00,3.42);
-		\filldraw[oxygen] (-4.51,-0.89,3.42) circle ({\ro*\l*1cm});
-		\filldraw[oxygen] (1.03,0.00,3.42) circle ({\ro*\l*1cm});
-		\draw[bond] (4.00,0.00,3.42) -- (3.49,0.89,3.42);
-		\filldraw[oxygen] (3.49,0.89,3.42) circle ({\ro*\l*1cm});
-		\draw[edge] (4.00,0.00,0.00) -- (4.00,0.00,6.84);
-		\filldraw[ca] (4.00,0.00,0.00) circle ({\rca*\l*1cm});
-		\draw[bond] (0.00,0.00,3.42) -- (-0.51,-0.89,3.42);
-		\filldraw[carbon] (0.00,0.00,3.42) circle ({\rc*\l*1cm});
-		\filldraw[ca] (-2.00,-1.15,2.28) circle ({\rca*\l*1cm});
-		\filldraw[ca] (0.00,0.00,6.84) circle ({\rca*\l*1cm});
-		\draw[bond] (4.00,0.00,3.42) -- (5.03,0.00,3.42);
-		\filldraw[oxygen] (-0.51,-0.89,3.42) circle ({\ro*\l*1cm});
-		\filldraw[oxygen] (5.03,0.00,3.42) circle ({\ro*\l*1cm});
-		\draw[bond] (-2.00,-1.15,5.70) -- (-1.49,-0.26,5.70);
-		\filldraw[oxygen] (-1.49,-0.26,5.70) circle ({\ro*\l*1cm});
-		\draw[bond] (4.00,0.00,3.42) -- (3.49,-0.89,3.42);
-		\filldraw[carbon] (4.00,0.00,3.42) circle ({\rc*\l*1cm});
-		\draw[bond] (-2.00,-1.15,5.70) -- (-3.03,-1.15,5.70);
-		\filldraw[oxygen] (-3.03,-1.15,5.70) circle ({\ro*\l*1cm});
-		\filldraw[ca] (2.00,-1.15,2.28) circle ({\rca*\l*1cm});
-		\draw[bond] (0.00,-2.31,1.14) -- (0.51,-1.42,1.14);
-		\filldraw[oxygen] (0.51,-1.42,1.14) circle ({\ro*\l*1cm});
-		\filldraw[ca] (4.00,0.00,6.84) circle ({\rca*\l*1cm});
-		\filldraw[oxygen] (3.49,-0.89,3.42) circle ({\ro*\l*1cm});
-		\draw[bond] (2.00,-1.15,5.70) -- (2.51,-0.26,5.70);
-		\filldraw[oxygen] (2.51,-0.26,5.70) circle ({\ro*\l*1cm});
-		\draw[bond] (0.00,-2.31,1.14) -- (-1.03,-2.31,1.14);
-		\filldraw[oxygen] (-1.03,-2.31,1.14) circle ({\ro*\l*1cm});
-		\draw[bond] (-2.00,-1.15,5.70) -- (-1.49,-2.04,5.70);
-		\filldraw[carbon] (-2.00,-1.15,5.70) circle ({\rc*\l*1cm});
-		\draw[bond] (2.00,-1.15,5.70) -- (0.97,-1.15,5.70);
-		\filldraw[oxygen] (0.97,-1.15,5.70) circle ({\ro*\l*1cm});
-		\filldraw[oxygen] (-1.49,-2.04,5.70) circle ({\ro*\l*1cm});
-		\draw[bond] (0.00,-2.31,1.14) -- (0.51,-3.20,1.14);
-		\filldraw[carbon] (0.00,-2.31,1.14) circle ({\rc*\l*1cm});
-		\draw[bond] (2.00,-1.15,5.70) -- (2.51,-2.04,5.70);
-		\filldraw[carbon] (2.00,-1.15,5.70) circle ({\rc*\l*1cm});
-		\filldraw[ca] (0.00,-2.31,4.56) circle ({\rca*\l*1cm});
-		\draw[bond] (-2.00,-3.46,3.42) -- (-2.51,-2.57,3.42);
-		\filldraw[oxygen] (-2.51,-2.57,3.42) circle ({\ro*\l*1cm});
-		\draw[edge] (-2.00,-3.46,0.00) -- (-2.00,-3.46,6.84);
-		\filldraw[ca] (-2.00,-3.46,0.00) circle ({\rca*\l*1cm});
-		\filldraw[oxygen] (0.51,-3.20,1.14) circle ({\ro*\l*1cm});
-		\filldraw[oxygen] (2.51,-2.04,5.70) circle ({\ro*\l*1cm});
-		\draw[bond] (-2.00,-3.46,3.42) -- (-0.97,-3.46,3.42);
-		\filldraw[oxygen] (-0.97,-3.46,3.42) circle ({\ro*\l*1cm});
-		\draw[bond] (2.00,-3.46,3.42) -- (1.49,-2.57,3.42);
-		\filldraw[oxygen] (1.49,-2.57,3.42) circle ({\ro*\l*1cm});
-		\draw[edge] (2.00,-3.46,0.00) -- (2.00,-3.46,6.84);
-		\filldraw[ca] (2.00,-3.46,0.00) circle ({\rca*\l*1cm});
-		\draw[bond] (-2.00,-3.46,3.42) -- (-2.51,-4.35,3.42);
-		\filldraw[carbon] (-2.00,-3.46,3.42) circle ({\rc*\l*1cm});
-		\filldraw[ca] (-2.00,-3.46,6.84) circle ({\rca*\l*1cm});
-		\draw[bond] (2.00,-3.46,3.42) -- (3.03,-3.46,3.42);
-		\filldraw[oxygen] (-2.51,-4.35,3.42) circle ({\ro*\l*1cm});
-		\filldraw[oxygen] (3.03,-3.46,3.42) circle ({\ro*\l*1cm});
-		\draw[bond] (2.00,-3.46,3.42) -- (1.49,-4.35,3.42);
-		\filldraw[carbon] (2.00,-3.46,3.42) circle ({\rc*\l*1cm});
-		\filldraw[ca] (2.00,-3.46,6.84) circle ({\rca*\l*1cm});
-		\filldraw[oxygen] (1.49,-4.35,3.42) circle ({\ro*\l*1cm});
+		% from back to front: edges, Ca, CO3 groups and the vertical edges with their atoms
+		\CO(2/3,4/3,1/12){-1}	% outside the cell
+		\CO(2/3,4/3,7/12){1}	% outside the cell
+		\Column(0,1)
+		\Column(1,1)
+		\draw[edge] (0,0,0) -- (1,0,0);
+		\draw[edge] (0,0,1) -- (1,0,1);
+		\Ca(1/3,2/3,1/6)
+		\CO(1/3,2/3,5/12){-1}
+		\CO(4/3,2/3,5/12){-1}	% outside the cell
+		\CO(2/3,1/3,1/12){-1}
+		\CO(-1/3,1/3,1/12){-1}	% outside the cell
+		\Ca(1/3,2/3,2/3)
+		\Ca(2/3,1/3,1/3)
+		\CO(1/3,2/3,11/12){1}
+		\CO(4/3,2/3,11/12){1}	% outside the cell
+		\CO(2/3,1/3,7/12){1}
+		\CO(-1/3,1/3,7/12){1}	% outside the cell
+		\Ca(2/3,1/3,5/6)
+		\Column(0,0)
+		\Column(1,0)
+		\CO(1/3,-1/3,5/12){-1}	% outside the cell
+		\CO(1/3,-1/3,11/12){1}	% outside the cell
 		
 	\end{scope}
 	
-\end{tikzpicture}
-}
+\end{tikzpicture}}
 \newcommand\MexicanHat{%
 \begin{tikzpicture}[
 	baseline={(current bounding box.center)},
@@ -1239,35 +1318,25 @@
 	baseline={(current bounding box.center)}
 	]
 	
-	\def\l{.45}
-	\def\Nx{4}      % magnets per row
-	\def\Ny{3}      % number of rows (1 = chain)
-	\def\dx{2.6}    % horizontal distance between magnets, in units of \l
-	\def\dy{3.4}    % vertical distance between magnets, in units of \l
-    \def\hw{{10,48,21,48,13, 23,42,20,38,40, 18,38,18,10,60}}    % horizontal, row by row from the bottom, left to right
-	\def\vw{{17,15,11,29, 25,16,20,10, 10,22,22,12, 34,22,50,18}}
+	\def\l{.4}
 	
-	% Bonds, including the ones that leave the picture
-	\foreach \i in {0,...,\Nx} {
-		\foreach \j in {1,...,\Ny} {
-			\pgfmathtruncatemacro\w{25+.75*\hw[(\j-1)*(\Nx+1)+\i]}
-			\draw[obj1, wiggly, draw=black!\w] ({(\i*\dx+.45)*\l},{\j*\dy*\l}) -- ({((\i+1)*\dx-.45)*\l},{\j*\dy*\l});
-		}
-	}
-	\foreach \i in {1,...,\Nx} {
-		\foreach \j in {0,...,\Ny} {
-			\pgfmathtruncatemacro\w{25+.75*\vw[\j*\Nx+\i-1]}
-			\draw[obj1, wiggly, draw=black!\w] ({\i*\dx*\l},{(\j*\dy+1)*\l}) -- ({\i*\dx*\l},{((\j+1)*\dy-1)*\l});
-		}
+	% Honeycomb lattice, as in \PEPS: magnets at the corners of two hexagons, bonds of length 3.2 (in units of \l).
+	% The grey levels of the three bonds at every magnet add up to 100 (monogamy of entanglement).
+	% Bonds, including the ones that leave the picture: start/end of the visible part and grey level
+	\foreach \xa/\ya/\xb/\yb/\w in {-0.36/1.81/-2.41/2.99/34, 0.00/0.60/0.00/-0.60/44, 0.36/1.81/2.41/2.99/22, -3.13/2.99/-5.19/1.81/38,
+		-5.54/0.60/-5.54/-0.60/28, -5.19/-1.81/-3.13/-2.99/48, -2.41/-2.99/-0.36/-1.81/14, 0.36/-1.81/2.41/-2.99/42,
+		5.19/1.81/3.13/2.99/32, 5.54/0.60/5.54/-0.60/34, 3.13/-2.99/5.19/-1.81/19, -2.77/4.20/-2.77/5.12/28,
+		-5.90/1.81/-7.21/2.56/34, -5.90/-1.81/-7.21/-2.56/24, -2.77/-4.20/-2.77/-5.12/38, 5.90/1.81/7.21/2.56/34,
+		2.77/4.20/2.77/5.12/46, 2.77/-4.20/2.77/-5.12/39, 5.90/-1.81/7.21/-2.56/47} {
+		\pgfmathtruncatemacro\g{25+.75*\w}
+		\draw[obj1, wiggly, draw=black!\g] ({\xa*\l},{\ya*\l}) -- ({\xb*\l},{\yb*\l});
 	}
 	
 	% Magnets
-	\foreach \i in {1,...,\Nx} {
-		\foreach \j in {1,...,\Ny} {
-			\begin{scope}[shift={({\i*\dx*\l},{\j*\dy*\l})}]
-				\qubitat{0}{purple}{purple}
-			\end{scope}
-		}
+	\foreach \x/\y in {-2.77/3.20, 2.77/3.20, -5.54/1.60, 0.00/1.60, 5.54/1.60, -5.54/-1.60, 0.00/-1.60, 5.54/-1.60, -2.77/-3.20, 2.77/-3.20} {
+		\begin{scope}[shift={({\x*\l},{\y*\l})}]
+			\qubitat{0}{purple}{purple}
+		\end{scope}
 	}
 	
 \end{tikzpicture}}
