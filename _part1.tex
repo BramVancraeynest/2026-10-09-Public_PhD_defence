@@ -1,11 +1,20 @@
 \begin{frame}{Phases of water}
 \centering
-\only<1>{
+\only<1-2>{
 \begin{tabular}{>{\centering\arraybackslash}p{.45\textwidth}>{\centering\arraybackslash}p{.45\textwidth}}
     \includegraphics[width=.7\linewidth]{figs/water.jpg} & \includegraphics[width=.7\linewidth]{figs/ice.jpg}
 \end{tabular}
 }
 \only<2>{
+\centering
+
+\bigskip
+Why are these phases so stable?
+
+\medskip
+Why is there a sharp distinction?
+}
+\only<3>{
 \begin{tabular}{>{\centering\arraybackslash}p{.45\textwidth}>{\centering\arraybackslash}p{.45\textwidth}}
     \includegraphics[width=.7\linewidth]{figs/water.jpg} & \includegraphics[width=.7\linewidth]{figs/ice.jpg} \\
     \addlinespace[1.5em]
@@ -17,15 +26,17 @@
 \begin{frame}{Crystallography}
 \centering
 \begin{tabular}{>{\centering\arraybackslash}p{.45\textwidth}>{\centering\arraybackslash}p{.45\textwidth}}
-    \includegraphics[trim={7cm 5cm 7cm 5cm},clip, width=.7\linewidth]{figs/Diamond.jpg} &
-	\includegraphics[trim={7cm 5cm 7cm 5cm},clip, width=.7\linewidth]{figs/Calcite.jpg} \\
+    \includegraphics[trim={7cm 5cm 7cm 5cm},clip, height=2.8cm]{figs/Diamond.jpg} &
+	\leavevmode\uncover<2->{\includegraphics[trim={7cm 5cm 7cm 5cm},clip, height=2.8cm]{figs/Calcite.jpg}} \\
     \addlinespace[2em]
-	\DiamondUnitCell & \CalciteUnitCell 
+	\DiamondUnitCell & \leavevmode\uncover<2->{\CalciteUnitCell}
 \end{tabular}
 
+\uncover<2>{
 \medskip
 
 The \emph{ordering} of the atoms determines the macroscopic properties!
+}
 \end{frame}
 
 \begin{frame}{Symmetry}
@@ -47,7 +58,7 @@ The \emph{ordering} of the atoms determines the macroscopic properties!
 \MexicanHat
 
 \bigskip
-Symmetry: shifts or rotations that leave a structure unchanged}}
+Symmetry: shifts, rotations or reflections that leave a structure unchanged}}
 \end{frame}
 
 \begin{frame}{Order breaks symmetry}
@@ -55,12 +66,12 @@ Symmetry: shifts or rotations that leave a structure unchanged}}
 \begin{tabular}{>{\centering\arraybackslash}p{.45\textwidth}>{\centering\arraybackslash}p{.45\textwidth}}
 	\Water & \IceLattice \\
 	\addlinespace[1em]
-	Continuous translations and rotations & Lattice translations and rotations \\
-    Disordered & Ordered
+    Disordered & Ordered \\
+	Continuous translations and rotations & Lattice translations and rotations
 \end{tabular}
 
 \bigskip
-More order $=$ less symmetry
+While ice is more ordered, liquid water is more symmetric
 \end{frame}
 
 \begin{frame}{Curie \& Landau}
