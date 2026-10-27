@@ -688,13 +688,13 @@
 	baseline={(current bounding box.center)}
 	]
 	
-	\def\l{.15}       % cm per Angstrom
+	\def\l{.18}       % cm per Angstrom
 	\def\a{4.99}      % lattice constants (Angstrom)
 	\def\c{17.06}
 	\def\xo{.257}     % position parameter of O (C-O = \xo\a = 1.28 Angstrom)
-	\def\rca{.6}      % radii (Angstrom)
-	\def\rc{.25}
-	\def\ro{.4}
+	\def\rca{.38}     % radii (Angstrom)
+	\def\rc{.17}
+	\def\ro{.25}
 	\def\el{10}       % elevation of the viewpoint (the list below is ordered back to front for this view)
 	
 	% Calcite (R-3c): one hexagonal cell, a1 to the left, a2 to the back right, c up, seen perpendicular to a1.
@@ -704,20 +704,19 @@
 	\def\Ca(##1){\filldraw[ca] (##1) circle ({\rca*\l*1cm});}
 	\def\C(##1){\filldraw[carbon] (##1) circle ({\rc*\l*1cm});}
 	\def\O(##1){\filldraw[oxygen] (##1) circle ({\ro*\l*1cm});}
-	% CO3 group with C at (u,v,w) and O at (u+s\xo,v,w), (u,v+s\xo,w), (u-s\xo,v-s\xo,w), s = 1 or -1;
-	% \COback draws the O behind the C, \COfront the rest
-	\def\COpts(##1,##2,##3)##4{%
+		% CO3 group with C at (u,v,w) and O at (u+s\xo,v,w), (u,v+s\xo,w), (u-s\xo,v-s\xo,w), s = 1 or -1:
+	% the three bonds as one path (so that their halos do not cut each other), then the O behind the C,
+	% the O beside it, the C and the O in front of it
+	\def\CO(##1,##2,##3)##4{%
 		\def\Cp{##1,##2,##3}%
 		\ifnum##4>0 \def\Ob{##1,##2+\xo,##3}\def\Os{##1+\xo,##2,##3}\def\Of{##1-\xo,##2-\xo,##3}%
-		\else \def\Ob{##1+\xo,##2+\xo,##3}\def\Os{##1-\xo,##2,##3}\def\Of{##1,##2-\xo,##3}\fi}
-	\def\COback(##1)##2{\COpts(##1){##2}\draw[bond] (\Cp) -- (\Ob); \O(\Ob)}
-	\def\COfront(##1)##2{\COpts(##1){##2}\draw[bond] (\Cp) -- (\Os); \O(\Os) \draw[bond] (\Cp) -- (\Of); \C(\Cp) \O(\Of)}
-	\def\CO(##1)##2{\COback(##1){##2}\COfront(##1){##2}}
-	% vertical edge of the cell with the atoms on it: Ca at w = 0, 1/2, 1 and CO3 at w = 1/4, 3/4
+		\else \def\Ob{##1+\xo,##2+\xo,##3}\def\Os{##1-\xo,##2,##3}\def\Of{##1,##2-\xo,##3}\fi
+		\draw[bond] (\Ob) -- (\Cp) -- (\Of) (\Cp) -- (\Os);
+		\O(\Ob) \O(\Os) \C(\Cp) \O(\Of)}
+	% vertical edge of the cell with the atoms on it: CO3 at w = 1/4, 3/4 and Ca at w = 0, 1/2, 1
 	\def\Column(##1,##2){%
-		\COback(##1,##2,1/4){1}\COback(##1,##2,3/4){-1}
 		\draw[edge] (##1,##2,0) -- (##1,##2,1);
-		\COfront(##1,##2,1/4){1}\COfront(##1,##2,3/4){-1}
+		\CO(##1,##2,1/4){1}\CO(##1,##2,3/4){-1}
 		\Ca(##1,##2,0)\Ca(##1,##2,1/2)\Ca(##1,##2,1)}
 	
 	\begin{scope}[
@@ -729,7 +728,7 @@
 		ca/.style={obj1, fill=gray!30},
 		carbon/.style={obj1, fill=black},
 		oxygen/.style={obj1, fill=white},
-		bond/.style={obj1, halo, shorten <={\rc*\l*1cm}, shorten >={\ro*\l*1cm}}
+        bond/.style={obj1, halo}
 		]
 		
 		% edges of the cell behind everything
@@ -1297,7 +1296,7 @@
 	}
  
 	% Axis label and plot title, just outside everything drawn so far
-	\node[below, font=\footnotesize] at ({\w*\l/2},0 |- current bounding box.south) {\# of quantum magnets};
+	\node[below, font=\footnotesize] at ({\w*\l/2},0 |- current bounding box.south) {Number of quantum magnets};
 	\node[above, font=\footnotesize] at ({\w*\l/2},0 |- current bounding box.north) {Number of parameters};
  
 	% 2^N: a straight line on this axis, labelled on its extension
